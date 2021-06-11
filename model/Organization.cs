@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System;
 
 namespace Model {
-    //Since all JSON provided have an _id, inheriting them from a base class makes the code cleaner.
+    //This class manages organizations.
     public abstract class Organization : BaseClass {
         string url {get; set;}
         string external_id {get; set;}
