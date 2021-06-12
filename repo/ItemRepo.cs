@@ -33,8 +33,8 @@ namespace Repo {
                 } else {
                     Console.WriteLine($"Invalid file name at {fp}, please check the README.md for more details regarding file naming.");
                 }
-                Console.WriteLine("All files have been imported!");
             }
+            Console.WriteLine("All files have been imported!");
         }
     }
 }

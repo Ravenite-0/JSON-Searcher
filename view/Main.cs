@@ -3,6 +3,8 @@ using static Utils.FileUtils;
 using static System.IO.Directory;
 using System.Linq;
 using static Repo.ItemRepo;
+using static Utils.Constants;
+using static Command.Command;
 
 namespace Main {
     class Program {
@@ -13,6 +15,10 @@ namespace Main {
             } else {
                 LoadRepo(GetFiles(json_filepath));
             }
+            while(!exit) {
+                HandleInput(Console.ReadLine());
+            }
+            Console.WriteLine("Press any key to exit.");
             Console.ReadLine();   
         }
     }
