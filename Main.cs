@@ -12,7 +12,7 @@ namespace Main {
 
             var files = GetFiles(json_filepath).Select(filepath => {
                 //Console.WriteLine($"Importing from {filepath}...");
-
+                string filename = 
                 var text = JsonConvert.DeserializeObject(FileToString(filepath));
                 Console.WriteLine(text);
                 return text;

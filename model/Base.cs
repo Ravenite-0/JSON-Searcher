@@ -1,5 +1,5 @@
 namespace Model {
     public abstract class BaseClass {
-        protected string id {get; set;}
+        protected string _id {get; set;}
     }
 }
