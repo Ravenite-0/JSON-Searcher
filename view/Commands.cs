@@ -18,6 +18,13 @@ namespace Command {
                 case CMD_CLEAR:
                     Console.Clear();
                     break;
+                case CMD_SEARCH:
+                    //TODO
+                    Console.Clear();
+                    break;
+                default:
+                    Console.WriteLine($"Command {input_blocks[0]} is not found. Type HELP for the list of available commands.");
+                    break;
             }
         }
     }
