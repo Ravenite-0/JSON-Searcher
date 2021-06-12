@@ -1,19 +1,26 @@
 using System;
-using static Util.FileUtils;
+using static Utils.FileUtils;
 using static System.IO.Directory;
 using System.Linq;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Main {
     class Program {
         static void Main(string[] args) {
-            string json_filepath = GetChildDir("json");            
-            List<string> files = GetFiles(json_filepath).Select(file => {
-                Console.WriteLine($"Importing from {file}...");
-                return file;
+            string json_filepath = GetChildDir("json");       
+
+            var files = GetFiles(json_filepath).Select(filepath => {
+                //Console.WriteLine($"Importing from {filepath}...");
+
+                var text = JsonConvert.DeserializeObject(FileToString(filepath));
+                Console.WriteLine(text);
+                return text;
             }).ToList();
 
-            Console.WriteLine("All files have been imported!");
+            //Console.WriteLine("All files have been imported!");
+
+
             
             
         }
