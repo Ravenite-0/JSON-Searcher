@@ -3,7 +3,8 @@ using System;
 
 namespace Model {
     //This class manages tickets.
-    public class Ticket : BaseClass {
+    public class Ticket {
+        protected string _id {get; set;}
         string url {get; set;}
         string external_id {get; set;}
         DateTime created_at {get; set;}

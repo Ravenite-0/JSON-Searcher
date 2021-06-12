@@ -4,7 +4,7 @@ using System;
 using Newtonsoft.Json;
 using Utils;
 using static System.IO.File;
-using System.Linq;
+using static Newtonsoft.Json.JsonConvert;
 
 namespace Repo {
     public class ItemRepo {
@@ -15,17 +15,26 @@ namespace Repo {
         public static void LoadRepo(string[] filepaths) {
             foreach(var fp in filepaths) {
                 Console.WriteLine($"Importing from {fp}...");
-                if(fp.ToLower().EndsWith("\\organizations.json")) {
-                    organizations = JsonConvert.DeserializeObject<Organization[]>(ReadAllText(fp), new JsonUtils<Organization[]>()).ToList();
-                } else if (fp.ToLower().EndsWith("\\tickets.json")) {
-                    tickets = JsonConvert.DeserializeObject<List<Ticket>>(ReadAllText(fp), new JsonUtils<List<Ticket>>());
-                } else if (fp.ToLower().EndsWith("\\users.json")) {
-                    users = JsonConvert.DeserializeObject<List<User>>(ReadAllText(fp), new JsonUtils<List<User>>());
+                if(fp.CaselessEndsWith("\\organizations.json")) {
+                    organizations = DeserializeObject<List<Organization>>(
+                                ReadAllText(fp),
+                                new JsonUtils<List<Organization>>()
+                            );
+                } else if (fp.CaselessEndsWith("\\tickets.json")) {
+                    tickets = DeserializeObject<List<Ticket>>(
+                                ReadAllText(fp),
+                                new JsonUtils<List<Ticket>>()
+                            );
+                } else if (fp.CaselessEndsWith("\\users.json")) {
+                    users = DeserializeObject<List<User>>(
+                                ReadAllText(fp),
+                                new JsonUtils<List<User>>()
+                            );
                 } else {
-                    throw new InvalidOperationException($"Invalid file name at {fp}, please check the README.md for more information");
+                    Console.WriteLine($"Invalid file name at {fp}, please check the README.md for more details regarding file naming.");
                 }
+                Console.WriteLine("All files have been imported!");
             }
-            Console.WriteLine("All files imported");
         }
     }
 }
