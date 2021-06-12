@@ -8,9 +8,9 @@ namespace Command {
     public abstract class Command {
         public static void HandleInput(string input) {
             string[] input_blocks = input.Split(' ');
-            switch(input_blocks[0]) {
+            switch(input_blocks[0].ToUpper()) {
                 case CMD_HELP:
-                    Console.WriteLine("");
+                    Console.WriteLine(HELP_STR);
                     break;
                 case CMD_RELOAD:
                     LoadRepo(GetFiles(GetChildDir("json")));
