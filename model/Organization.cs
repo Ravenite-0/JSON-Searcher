@@ -3,7 +3,7 @@ using System;
 
 namespace Model {
     //This class manages organizations.
-    public abstract class Organization : BaseClass {
+    public class Organization : BaseClass {
         string url {get; set;}
         string external_id {get; set;}
         string name {get; set;}

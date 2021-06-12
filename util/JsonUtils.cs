@@ -1,27 +1,23 @@
 using static System.Reflection.Assembly;
-using static System.IO.Directory;
-using static System.IO.Path;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Model;
 using System;
+using System.Collections.Generic;
+using static Newtonsoft.Json.Linq.JToken;
 
 namespace Utils {
     //This class uses inheritance to instantiate a custom JSON reader that converts JSON files to various classes
-    public class JsonUtils : JsonConverter {
+    public class JsonUtils<T> : JsonConverter {
         public override bool CanConvert(Type objectType) =>
-            typeof(BaseClass).IsAssignableFrom(objectType);
+            typeof(T).IsAssignableFrom(objectType);
     
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
-            var token = reader.TokenType;
-            if(token == JsonToken.StartArray) {
-                
-            }
-            return existingValue;
-        }
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) =>
+            (reader.TokenType == JsonToken.StartArray) ?
+                JArray.Load(reader).ToObject<T>() :
+                new List<T> { JObject.Load(reader).ToObject<T>() };
         
-
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) =>
-        throw new NotImplementedException();
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) =>
+            throw new NotImplementedException();
     }
 }

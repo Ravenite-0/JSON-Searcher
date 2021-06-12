@@ -4,6 +4,7 @@ using static System.IO.Directory;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Repo;
 
 namespace Main {
     class Program {
@@ -13,15 +14,8 @@ namespace Main {
             if(GetFiles(json_filepath).Count() == 0) {
                 Console.WriteLine("Empty directory. Did you removed any files by accident?");
             } else {
-                
+                ItemRepo.LoadRepo(GetFiles(json_filepath));
             }
-            var files = GetFiles(json_filepath).Select(filepath => {
-                //Console.WriteLine($"Importing from {filepath}...");
-                string filename = filepath.Split('\\').Last();
-                var text = JsonConvert.DeserializeObject(FileToString(filepath));
-                Console.WriteLine(filename);
-                return text;
-            }).ToList();
 
             //Console.WriteLine("All files have been imported!");
 

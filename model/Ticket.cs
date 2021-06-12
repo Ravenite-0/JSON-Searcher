@@ -3,7 +3,7 @@ using System;
 
 namespace Model {
     //This class manages tickets.
-    public abstract class Ticket : BaseClass {
+    public class Ticket : BaseClass {
         string url {get; set;}
         string external_id {get; set;}
         DateTime created_at {get; set;}

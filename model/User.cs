@@ -3,7 +3,7 @@ using System;
 
 namespace Model {
     //This class manages users.
-    public abstract class User : BaseClass {
+    public class User : BaseClass {
         string url {get; set;}
         string external_id {get; set;}
         string name {get; set;}
