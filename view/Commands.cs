@@ -3,6 +3,7 @@ using static Utils.FileUtils;
 using System;
 using static System.IO.Directory;
 using static Utils.Constants;
+using static Repo.ItemSearch;
 
 namespace Command {
     public abstract class Command {
@@ -19,6 +20,7 @@ namespace Command {
                     Console.Clear();
                     break;
                 case CMD_SEARCH:
+                    SearchItems(input_blocks);
                     //TODO
                     Console.Clear();
                     break;

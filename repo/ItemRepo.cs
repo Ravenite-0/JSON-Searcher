@@ -8,9 +8,9 @@ using static Newtonsoft.Json.JsonConvert;
 
 namespace Repo {
     public class ItemRepo {
-        static List<User> users {get; set;}
-        static List<Ticket> tickets {get; set;}
-        static List<Organization> organizations {get; set;}
+        public static List<User> users {get; set;}
+        public static List<Ticket> tickets {get; set;}
+        public static List<Organization> organizations {get; set;}
 
         public static void LoadRepo(string[] filepaths) {
             foreach(var fp in filepaths) {
