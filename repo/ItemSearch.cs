@@ -38,7 +38,7 @@ namespace Repo {
                 var results = organizations.Where(organization => {
                     foreach(DictionaryEntry f in searchFields) {
                         var test = organization.GetType().GetProperty(f.Key.ToString()).GetValue(organization);
-                        if(organization.GetType().GetProperty(f.Key.ToString()).GetValue(organization).ToString()!= f.Value.ToString()) {
+                        if(!organization.GetType().GetProperty(f.Key.ToString()).GetValue(organization).ToString().Contains(f.Value.ToString())) {
                             return false;
                         }
                     }
@@ -58,6 +58,7 @@ namespace Repo {
                 foreach(var o in orgs) {
                     o.ToConsoleString<Organization>();
                 }
+                Console.WriteLine("End of search.");
             }
         }
     }
