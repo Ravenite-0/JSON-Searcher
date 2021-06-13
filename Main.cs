@@ -8,15 +8,17 @@ using static Utils.Constants;
 using static Command.Command;
 
 class Program {
+    public static bool closeApp = false;
+    
     static void Main(string[] args) {
-        string json_filepath = GetChildDir("json");
-        if(GetFiles(json_filepath).Count() > 1) {
-            LoadRepo(GetFiles(json_filepath));
+        string[] files =  GetFiles(GetChildDir("json"));
+        if(files.Count() > 0) {
+            LoadFiles(files);
         } else {
             ThrowError("Empty directory. Did you remove all the files by accident?");
         }
 
-        while(!exit) {
+        while(!closeApp) {
             HandleInput(Console.ReadLine());
         }
     }

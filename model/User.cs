@@ -3,25 +3,24 @@ using System;
 
 namespace Model {
     //This class manages users.
-    public class User {
-        string _id;
-        string url;
-        string external_id;
-        string name;
-        string alias;
-        DateTime created_at;
-        bool active;
-        bool verified;
-        bool shared;
-        string locale;
-        string timezone;
-        DateTime last_login_at;
-        string email;
-        string phone;
-        string signature;
-        string organization_id;
-        List<string> tags;
-        bool suspended;
-        string role;
+    public class User : Entity {
+        string url {get; set;}
+        string external_id {get; set;}
+        string name {get; set;}
+        string alias {get; set;}
+        DateTime created_at {get; set;}
+        bool active {get; set;}
+        bool verified {get; set;}
+        bool shared {get; set;}
+        string locale {get; set;}
+        string timezone {get; set;}
+        DateTime last_login_at {get; set;}
+        string email {get; set;}
+        string phone {get; set;}
+        string signature {get; set;}
+        string organization_id {get; set;}
+        List<string> tags {get; set;}
+        bool suspended {get; set;}
+        string role {get; set;}
     }
 }

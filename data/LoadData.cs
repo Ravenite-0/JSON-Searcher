@@ -12,7 +12,7 @@ namespace Repo {
         public static List<User> users;
         public static List<Ticket> tickets;
         public static List<Organization> organizations;
-        public static void LoadRepo(string[] filepaths) {
+        public static void LoadFiles(string[] filepaths) {
             foreach(var fp in filepaths) {
                 string fileContent = ReadAllText(fp);
                 Console.WriteLine($"Importing from {fp}...");
