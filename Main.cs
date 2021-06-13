@@ -1,11 +1,10 @@
-using static Utils.SysUtils;
+using static Utils.CmdUtils;
 using System;
 using static Utils.FileUtils;
 using static System.IO.Directory;
 using System.Linq;
-using static Repo.ItemRepo;
+using static Data.Data;
 using static Utils.Constants;
-using static Command.Command;
 
 class Program {
     public static bool closeApp = false;

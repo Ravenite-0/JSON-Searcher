@@ -1,5 +1,5 @@
 using static Utils.Constants;
-using static Repo.ItemRepo;
+using static Data.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using Model;
 using System.Reflection;
 using static Utils.StringUtils;
 
-namespace Repo {
+namespace Data {
     public abstract class ItemSearch {
         public static void SearchItems(string[] input) {
             switch(input[1].ToUpper()) {

@@ -1,19 +1,19 @@
-using static System.Reflection.Assembly;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Model;
+using static Newtonsoft.Json.JsonToken;
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
-using static Newtonsoft.Json.Linq.JToken;
 
 namespace Utils {
-    //This class uses inheritance to instantiate a custom JSON reader that converts JSON files to various classes
+    ///<summary>JsonUtils is a custom Json converter class based on the imported json library.</summary>
     public class JsonUtils<T> : JsonConverter {
         public override bool CanConvert(Type objectType) =>
             typeof(T).IsAssignableFrom(objectType);
     
+        [Description("A custom Json parser that checks if the Json input is a single item or an array."),Category("Json")]
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) =>
-            (reader.TokenType == JsonToken.StartArray) ?
+            (reader.TokenType == StartArray) ?
                 JArray.Load(reader).ToObject<T>() :
                 new List<T> { JObject.Load(reader).ToObject<T>() };
         

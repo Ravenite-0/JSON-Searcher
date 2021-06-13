@@ -1,6 +1,3 @@
-using System.Collections.Specialized;
-using System.Collections.Generic;
-
 namespace Utils {
     public abstract class Constants {
         public const string CMD_HELP = "help",
