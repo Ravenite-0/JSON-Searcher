@@ -6,7 +6,6 @@ using System.IO;
 
 namespace Utils {
     public class FileUtils {
-        //This method looks for the relative filepath of "json" folder in this repo.
         public static string GetChildDir(string childDir) {
             string targetpath = GetExecutingAssembly().Location;
             string result = null;
@@ -21,8 +20,5 @@ namespace Utils {
             }
             return result;
         }
-
-        public static string FileToString(string filepath) =>
-            ReadAllText(filepath);
     }
 }
