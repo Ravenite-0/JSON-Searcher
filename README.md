@@ -1,7 +1,7 @@
 # JSON-Searcher
 
 * [Starting the application](#Start)
-* [Available commands](#Commands)
+* [Using the application](#Features)
 * [Code Design](#Design)
 * [Assumptions](#Assumptions)
 
@@ -9,10 +9,20 @@
 Below are the steps to get this application started:
 1. Clone this repo
 
-## Commands
+## Features
+1. Once you have the application set-up. You can use the list of available commands to start searching.
+  * You can always type HELP into the application to view all available commands.
+
 
 ## Design
+  * The *json* folder contains the raw json files which can be picked up by the application. You can also provide customized inputs into the    system.
+  * The *model* folder contains class files that represents the json schema so they can store JSON objects.
+  * The *data* folder stores data parsed from the JSON files once they are loaded. It also contains the main logic for searching those fields.
+  * The *utils* folder contains different methods that assists the functions in the above folders.
 
 ## Assumptions
-1. Users, tickets, and organizations have unique _id values;
-2. Whilst this application detects invalid JSON formatting, valid JSON files should still adhere to the provided JSON schema.
+  * Invalid JSON files are detected, but valid JSON strings must have a corresponding class in the *model* folder.
+  * Only JSON files are supplied into the *json* folder.
+  * You cannot search for fields that contain spaces.
+
+
