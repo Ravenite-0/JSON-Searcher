@@ -6,6 +6,8 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using static Newtonsoft.Json.JsonConvert;
 using Model;
+using static System.IO.File;
+
 namespace Utils {
     ///<summary>JsonUtils is a custom Json converter class based on the imported json library.</summary>
     public class CustomJsonConverter<T> : JsonConverter {
@@ -23,7 +25,13 @@ namespace Utils {
     }
 
     public class JsonUtils {
-        public static T ParseJsonToTable<T>(T data, string fileContent) =>
+        public static T DeserializeJson<T>(string fileContent) =>
             DeserializeObject<T>(fileContent, new CustomJsonConverter<T>());
+
+        public static dynamic ParseJsonToTable(Type tableType, string filepath) =>
+            typeof(JsonUtils)
+                .GetMethod("DeserializeJson")
+                .MakeGenericMethod(tableType)
+                .Invoke(new JsonUtils(), new object[] { ReadAllText(filepath) });
     }
 }

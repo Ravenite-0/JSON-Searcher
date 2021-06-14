@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using static Utils.Constants;
 using System.ComponentModel;
+using static Utils.JsonUtils;
 
 namespace Data {
     ///<summary>Data class manages the storage of imported valid JSON data.</summary>
@@ -27,25 +28,8 @@ namespace Data {
         public static void ImportEntitiesFromJson(string[] filepaths) {
             foreach(var fp in filepaths) {
                 string fileName = fp.Split('\\').Last();
-                string fileContent = ReadAllText(fp);
                 Console.WriteLine($"Importing from {fp}...");
-
-                
-                var method = typeof(JsonUtils).GetMethod("ParseJsonToTable");
-                var tt = tables[fileName].GetType();
-                var GM = method.MakeGenericMethod(new Type[] {tt});
-                var tesst = GM.Invoke(new JsonUtils(), new object[] {tables[fileName], fileContent});
-                tables[fileName].AddRange(Convert.ChangeType(tesst, tables[fileName].GetType()));
-                // if(fp.EndsWith("\\organizations.json", InvariantCultureIgnoreCase)) {
-                //     organizations = DeserializeObject<List<Organization>>(fileContent, new JsonUtils<List<Organization>>());
-                // } else if (fp.EndsWith("\\tickets.json", InvariantCultureIgnoreCase)) {
-                //     tickets = DeserializeObject<List<Ticket>>( fileContent, new JsonUtils<List<Ticket>>());
-                // } else if (fp.EndsWith("\\users.json", InvariantCultureIgnoreCase)) {
-                //     users = DeserializeObject<List<User>>(fileContent, new JsonUtils<List<User>>());
-                // } else {
-                //     Console.WriteLine($"Invalid file name at {fp}, please check the README.md for more details regarding file naming.");
-                // }
-                var awst = "";
+                tables[fileName].AddRange(ParseJsonToTable(tables[fileName].GetType(), fp));
             }
             Console.WriteLine("All files have been imported!");
         }

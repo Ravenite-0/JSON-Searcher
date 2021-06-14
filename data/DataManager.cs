@@ -10,6 +10,7 @@ using System.Reflection;
 using static Utils.CmdUtils;
 using static System.StringComparison;
 using System.ComponentModel;
+using static Utils.StringUtils;
 using static System.IO.File;
 
 namespace Data {
@@ -19,68 +20,46 @@ namespace Data {
             if(input.Length < 2) {
                 ThrowError("No tables searched, please type HELP for more information regarding search command formatting.");
             } else {
-                var searchTable = tables[input[1].ToLower()];
-
-                if(searchTable is null) {
-                    ThrowError($"Invalid table {input[1]}. Please type HELP for more information regarding tables.");
-                } else {
-                    SearchByFields(input, searchTable);
-                }
-
-                if(input.Any(table => table.Contains(input[1], InvariantCultureIgnoreCase))) {
-                    
-                } else {
-                    ThrowError($"Invalid table {input[1]}. Please type HELP for more information regarding tables.");
-                }
-                switch(input[1].ToLower()) {
-                    case TBL_ORGANIZATION:
-                        SearchByFields<Organization>(input, organizations);
-                        break;
-                    case TBL_TICKET:
-                        SearchByFields<Ticket>(input, tickets);
-                        break;
-                    case TBL_USER:
-                        SearchByFields<User>(input, users);
-                        break;
-                    default:
-                        
-                        break;
-            }
+                var table = tables[input[1].ParseToTableName()];
+                SearchByFields(input.Skip(2).ToArray(), table);
             }
         }
 
         public static void SearchByFields<T>(string[] fields, List<T> table) {
-            ListDictionary searchFields = new ListDictionary();
-            try {
+            if(fields.Count() == 0) {
+                Output(table); 
+            }
+            else if(fields.Length % 2 == 0) {
+                ListDictionary searchFields = new ListDictionary();
+
                 for(int i = 0; i < fields.Length; i++) {
                     searchFields.Add(fields[i], fields[++i]);
                 }
 
-                var results = organizations.Where(organization => {
-                    foreach(DictionaryEntry f in searchFields) {
-                        var test = organization.GetType().GetProperty(f.Key.ToString()).GetValue(organization);
-                        if(!organization.GetType().GetProperty(f.Key.ToString()).GetValue(organization).ToString().Contains(f.Value.ToString())) {
+                var filtered = table.Where(row => {
+                    foreach(DictionaryEntry field in searchFields) {
+                        var dbug = row.GetType();
+
+                        var test = row.GetType().GetProperty(field.Key.ToString()).GetValue(row);
+                        if(!test.ToString().Contains(field.Value.ToString())) {
                             return false;
                         }
                     }
                     return true;
                 });
 
-                Output(results.ToList());
-            } catch(IndexOutOfRangeException) {
-                ThrowError("");
+                Output<T>(filtered.ToList());
+            } else {
+                ThrowError($"Field {fields.Last()} has no value. Please type HELP for more details on using the search command.");
             }
         }
 
-        public static void Output(List<Organization> orgs) {
-            var resultCount = orgs.Count(); 
-            Console.WriteLine($"Total results found: {resultCount}");
-            if(resultCount > 0) {
-                foreach(var o in orgs) {
-                    //o.ToConsoleString<Organization>();
-                }
-                Console.WriteLine("End of search.");
+        public static void Output<T>(List<T> entities) {
+            Console.WriteLine($"Total results found: {entities.Count()}");
+            foreach(var o in entities) {
+                Console.WriteLine("Result");
             }
+            Console.WriteLine("End of search.");
         }
     }
 }
