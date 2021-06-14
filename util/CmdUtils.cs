@@ -11,7 +11,7 @@ using static System.String;
 
 namespace Utils {
     ///<summary>CmdUtils manages methods that controls the inputs and outputs from the console.</summary>
-    public abstract class CmdUtils {
+    public static class CmdUtils {
 
         [Description("Commands dictionary that maps commands with their descriptions and actions."),Category("Cmd")]
         //The actions always contain 1 input is to accommodate SearchItems().
@@ -47,9 +47,9 @@ namespace Utils {
             Console.WriteLine(errorMessage);
 
         [Description("Displays provided object's properties and respective values via console."),Category("Cmd")]
-        protected void ToConsoleString() {
-            foreach(var property in this.GetType().GetProperties()) {
-                Console.WriteLine($"{property.Name.ToString()}  ->  {property.GetValue(this).ToString()}");
+        public static void ToConsoleString(this object entity) {
+            foreach(var property in entity.GetType().GetProperties()) {
+                Console.WriteLine($"{property.Name.ToString()}  ->  {property.GetValue(entity).ToString()}");
             }
             Console.WriteLine("==================================================");
         }

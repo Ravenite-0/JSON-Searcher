@@ -54,7 +54,7 @@ namespace Data {
         public static void Output<T>(List<T> entities) {
             Console.WriteLine($"Total results found: {entities.Count()}");
             foreach(var o in entities) {
-                Console.WriteLine("Result");
+                o.ToConsoleString();
             }
             Console.WriteLine("End of search.");
         }

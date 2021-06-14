@@ -6,7 +6,7 @@ using static System.Reflection.Assembly;
 
 namespace Utils {
     ///<summary>FileUtils manages methods that interacts with files in the system.</summary>
-    public class FileUtils {
+    public static class FileUtils {
 
         [Description("Returns the full filepath of a folder in this project by providing the folder name."),Category("File")]
         public static string GetChildDir(string childDir) {
