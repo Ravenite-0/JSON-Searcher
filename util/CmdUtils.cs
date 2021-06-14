@@ -1,5 +1,5 @@
-using static Data.Data;
-using static Data.ItemSearch;
+using static Data.Database;
+using static Data.DataManager;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,7 +27,7 @@ namespace Utils {
                 (string[] input) => closeApp = true)},
             {CMD_RELOAD, new KeyValuePair<string, Action<string[]>>(
                 "Reloads all files from the json folder.",
-                (string[] input) => GetAllJsonFilepaths())},
+                (string[] input) => ImportEntitiesFromJson(GetAllJsonFilepaths()))},
             {CMD_SEARCH, new KeyValuePair<string, Action<string[]>>(
                 "search table field value [field value]... Searches a table with at least 1 field with value as filter",
                 (string[] input) => SearchItems(input))}

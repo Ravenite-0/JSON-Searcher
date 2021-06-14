@@ -8,8 +8,8 @@ namespace Utils {
                             CMD_EXIT = "exit",
                             CMD_RELOAD = "reload",
                             CMD_SEARCH = "search",
-                            TBL_ORGANIZATION = "organization",
-                            TBL_TICKET = "ticket",
-                            TBL_USER = "user";
+                            TBL_ORGANIZATION = "organizations",
+                            TBL_TICKET = "tickets",
+                            TBL_USER = "users";
     }
 }

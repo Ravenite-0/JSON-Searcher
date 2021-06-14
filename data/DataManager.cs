@@ -1,5 +1,5 @@
 using static Utils.Constants;
-using static Data.Data;
+using static Data.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +9,20 @@ using Model;
 using System.Reflection;
 using static Utils.CmdUtils;
 using static System.StringComparison;
+using System.ComponentModel;
+using static System.IO.File;
 
 namespace Data {
-    public abstract class ItemSearch {
+    ///<summary>DataManager manages methods that performs CRUD operations on the Database class.</summary>
+    public abstract class DataManager {
+
+        
+
         public static void SearchItems(string[] input) {
             if(input.Length < 2) {
                 ThrowError("No tables searched, please type HELP for more information regarding search command formatting.");
             } else {
-                if(tables.Any(table => table.Contains(input[1], InvariantCultureIgnoreCase))) {
+                if(input.Any(table => table.Contains(input[1], InvariantCultureIgnoreCase))) {
                     
                 } else {
                     ThrowError($"Invalid table {input[1]}. Please type HELP for more information regarding tables.");

@@ -19,5 +19,9 @@ namespace Utils {
         
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) =>
             throw new NotImplementedException();
+        
+        public static void ParseJsonToEntity() {
+            
+        }
     }
 }
