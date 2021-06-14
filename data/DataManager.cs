@@ -38,10 +38,7 @@ namespace Data {
 
                 var filtered = table.Where(row => {
                     foreach(DictionaryEntry field in searchFields) {
-                        var dbug = row.GetType();
-
-                        var test = row.GetType().GetProperty(field.Key.ToString()).GetValue(row);
-                        if(!test.ToString().Contains(field.Value.ToString())) {
+                        if(!row.GetType().GetProperty(field.Key.ToString()).GetValue(row).ToString().Contains(field.Value.ToString())) {
                             return false;
                         }
                     }

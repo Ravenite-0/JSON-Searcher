@@ -3,7 +3,8 @@ using System;
 
 namespace Model {
     //This class manages tickets.
-    public class Ticket : Entity {
+    public class Ticket {
+        public string _id {get; set;}
         public string url {get; set;}
         public string external_id {get; set;}
         public DateTime created_at {get; set;}

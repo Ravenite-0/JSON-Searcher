@@ -3,7 +3,8 @@ using System;
 
 namespace Model {
     //This class manages users.
-    public class User : Entity {
+    public class User {
+        public string _id {get; set;}
         public string url {get; set;}
         public string external_id {get; set;}
         public string name {get; set;}

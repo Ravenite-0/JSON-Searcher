@@ -46,6 +46,14 @@ namespace Utils {
         public static void ThrowError(string errorMessage) =>
             Console.WriteLine(errorMessage);
 
+        [Description("Displays provided object's properties and respective values via console."),Category("Cmd")]
+        protected void ToConsoleString() {
+            foreach(var property in this.GetType().GetProperties()) {
+                Console.WriteLine($"{property.Name.ToString()}  ->  {property.GetValue(this).ToString()}");
+            }
+            Console.WriteLine("==================================================");
+        }
+
         [Description("Displays the command dictionary above to user via console."),Category("Cmd")]
         public static void DisplayHelpCommand() {
             foreach(var cmd in commands) {
