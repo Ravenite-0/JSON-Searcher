@@ -23,5 +23,8 @@ namespace Utils {
             }
             return result;
         }
+
+        public static string[] GetAllJsonFilepaths() =>
+            GetFiles(GetChildDir("json"));
     }
 }
