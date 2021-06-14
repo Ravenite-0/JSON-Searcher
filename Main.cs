@@ -6,19 +6,21 @@ using System.Linq;
 using static Data.Data;
 using static Utils.Constants;
 
-class Program {
+public abstract class Program {
     public static bool closeApp = false;
     
     static void Main(string[] args) {
-        string[] files =  GetFiles(GetChildDir("json"));
-        if(files.Count() > 0) {
-            LoadFiles(files);
+        string[] filepaths =  GetAllJsonFilepaths();
+        Console.WriteLine("Thank you for using JSON searcher!");
+
+        if(filepaths.Count() > 0) {
+            LoadFiles(filepaths);
         } else {
-            ThrowError("Empty directory. Did you remove all the files by accident?");
+            ThrowError("No files found (Did you empty the folder by accident)? Type reload to try again");
         }
 
         while(!closeApp) {
-            HandleInput(Console.ReadLine());
+            ExecuteCommand(Console.ReadLine());
         }
     }
 }
