@@ -4,20 +4,20 @@ using System;
 namespace Model {
     //This class manages tickets.
     public class Ticket : Entity {
-        string url {get; set;}
-        string external_id {get; set;}
-        DateTime created_at {get; set;}
-        string type {get; set;}
-        string subject {get; set;}
-        string description {get; set;}
-        string priority {get; set;}
-        string status {get; set;}
-        string submitter_id {get; set;}
-        string assignee_id {get; set;}
-        string organization_id {get; set;}
-        List<string> tags {get; set;}
-        bool has_incidents {get; set;}
-        DateTime due_at {get; set;}
-        string via {get; set;}
+        public string url {get; set;}
+        public string external_id {get; set;}
+        public DateTime created_at {get; set;}
+        public string type {get; set;}
+        public string subject {get; set;}
+        public string description {get; set;}
+        public string priority {get; set;}
+        public string status {get; set;}
+        public string submitter_id {get; set;}
+        public string assignee_id {get; set;}
+        public string organization_id {get; set;}
+        public List<string> tags {get; set;}
+        public bool has_incidents {get; set;}
+        public DateTime due_at {get; set;}
+        public string via {get; set;}
     }
 }

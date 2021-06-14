@@ -4,10 +4,11 @@ using static Newtonsoft.Json.JsonToken;
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
-
+using static Newtonsoft.Json.JsonConvert;
+using Model;
 namespace Utils {
     ///<summary>JsonUtils is a custom Json converter class based on the imported json library.</summary>
-    public class JsonUtils<T> : JsonConverter {
+    public class CustomJsonConverter<T> : JsonConverter {
         public override bool CanConvert(Type objectType) =>
             typeof(T).IsAssignableFrom(objectType);
     
@@ -19,9 +20,10 @@ namespace Utils {
         
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) =>
             throw new NotImplementedException();
-        
-        public static void ParseJsonToEntity() {
-            
-        }
+    }
+
+    public class JsonUtils {
+        public static T ParseJsonToTable<T>(T data, string fileContent) =>
+            DeserializeObject<T>(fileContent, new CustomJsonConverter<T>());
     }
 }

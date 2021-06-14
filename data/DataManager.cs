@@ -15,13 +15,18 @@ using static System.IO.File;
 namespace Data {
     ///<summary>DataManager manages methods that performs CRUD operations on the Database class.</summary>
     public abstract class DataManager {
-
-        
-
         public static void SearchItems(string[] input) {
             if(input.Length < 2) {
                 ThrowError("No tables searched, please type HELP for more information regarding search command formatting.");
             } else {
+                var searchTable = tables[input[1].ToLower()];
+
+                if(searchTable is null) {
+                    ThrowError($"Invalid table {input[1]}. Please type HELP for more information regarding tables.");
+                } else {
+                    SearchByFields(input, searchTable);
+                }
+
                 if(input.Any(table => table.Contains(input[1], InvariantCultureIgnoreCase))) {
                     
                 } else {
@@ -42,7 +47,6 @@ namespace Data {
                         break;
             }
             }
-            
         }
 
         public static void SearchByFields<T>(string[] fields, List<T> table) {

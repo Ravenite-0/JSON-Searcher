@@ -30,15 +30,12 @@ namespace Data {
                 string fileContent = ReadAllText(fp);
                 Console.WriteLine($"Importing from {fp}...");
 
-                // Type tableType = tables[fileName].GetType();
-
-                // var test = tableType.GetMethod("DeserializeObject");
-                // var method = test.MakeGenericMethod(tableType);
-
-                tables[fileName].AddRange(DeserializeObject<List<Entity>>(fileContent, new JsonUtils<List<Entity>>()));
-
-
-                // //if(fileName.StartsWith())
+                
+                var method = typeof(JsonUtils).GetMethod("ParseJsonToTable");
+                var tt = tables[fileName].GetType();
+                var GM = method.MakeGenericMethod(new Type[] {tt});
+                var tesst = GM.Invoke(new JsonUtils(), new object[] {tables[fileName], fileContent});
+                tables[fileName].AddRange(Convert.ChangeType(tesst, tables[fileName].GetType()));
                 // if(fp.EndsWith("\\organizations.json", InvariantCultureIgnoreCase)) {
                 //     organizations = DeserializeObject<List<Organization>>(fileContent, new JsonUtils<List<Organization>>());
                 // } else if (fp.EndsWith("\\tickets.json", InvariantCultureIgnoreCase)) {
@@ -48,6 +45,7 @@ namespace Data {
                 // } else {
                 //     Console.WriteLine($"Invalid file name at {fp}, please check the README.md for more details regarding file naming.");
                 // }
+                var awst = "";
             }
             Console.WriteLine("All files have been imported!");
         }
