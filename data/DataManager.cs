@@ -31,6 +31,8 @@ namespace Data {
           OutputExceptionToConsole(e, "Please provide a table to be searched (Organizations, Tickets, Users).", false);
         } else if (e is KeyNotFoundException) {
           OutputExceptionToConsole(e, $"Table {input[1]} is invalid:");
+        } else {
+          OutputExceptionToConsole(e, $"Oops! Something went wrong during table lookup:");
         }
       }
     }
@@ -43,7 +45,7 @@ namespace Data {
             searchFields.Add(fields[i], fields[++i]);
           }
 
-          var filtered = table.Where(row => {
+          var tableResults = table.Where(row => {
             foreach(DictionaryEntry field in searchFields) {
               if(!row.GetType().GetProperty(field.Key.ToString()).GetValue(row).ToString().Contains(field.Value.ToString())) {
                 return false;
@@ -52,12 +54,14 @@ namespace Data {
             return true;
           });
 
-          DisplaySearchResults<T>(filtered.ToList());
+          DisplaySearchResults<T>(tableResults.ToList());
         } else {
           DisplaySearchResults(table); 
         }
       } catch (Exception e) {
-
+        if(e is IndexOutOfRangeException) {
+          OutputExceptionToConsole(e, $"Your search field {fields.Last()} had no search value (Did you forget to use % to search empty fields?):");
+        }
       }
     }
 

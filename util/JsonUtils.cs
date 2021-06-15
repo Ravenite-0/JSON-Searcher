@@ -23,7 +23,7 @@ namespace Utils {
         if(e is JsonReaderException) {
           OutputExceptionToConsole(e, "Error: Invalid JSON schema found:");
         } else if (e is FormatException) {
-          OutputExceptionToConsole(e, "Oops! Something went wrong with the JSON schema formatting. (Did you forget to add [] to your JSON objects?)", false);
+          OutputExceptionToConsole(e, "Something went wrong with the JSON schema formatting. (Did you forget to add [] to your JSON objects?)", false);
         } else {
           OutputExceptionToConsole(e, "Oops! Something went wrong with JSON file parsing:");
         }
