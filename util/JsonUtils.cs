@@ -13,10 +13,14 @@ namespace Utils {
         public override bool CanConvert(Type objectType) =>
             typeof(T).IsAssignableFrom(objectType);
     
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) =>
-            (reader.TokenType == StartArray) ?
-                JArray.Load(reader).ToObject<T>() :
-                new List<T> { JObject.Load(reader).ToObject<T>() };
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+            if (reader.TokenType == StartArray) {
+                return JArray.Load(reader).ToObject<T>();
+            } else {
+                return new List<T> { JObject.Load(reader).ToObject<T>() };
+            };  
+        }
+            
         
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) =>
             throw new NotImplementedException();
@@ -29,10 +33,10 @@ namespace Utils {
             DeserializeObject<T>(fileContent, new CustomJsonConverter<T>());
 
         [Description("Identifies and parses JSON string into the correct table."),Category("Json")]
-        public static dynamic ParseJsonToTable(Type tableType, string filepath) =>
+        public static dynamic ParseJsonToTable(Type tableType, string fileContent) =>
             typeof(JsonUtils)
                 .GetMethod("DeserializeJson")
                 .MakeGenericMethod(tableType)
-                .Invoke(new JsonUtils(), new object[] { ReadAllText(filepath) });
+                .Invoke(new JsonUtils(), new object[] { fileContent });
     }
 }

@@ -17,7 +17,7 @@ public abstract class Program {
         if(filepaths.Count() > 0) {
             ImportEntitiesFromJson(filepaths);
         } else {
-            ThrowError("No files found (Did you empty the folder by accident)? Type reload to try again");
+            //ThrowError("No files found (Did you empty the folder by accident)? Type reload to try again");
         }
 
         while(!closeApp) {

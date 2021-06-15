@@ -12,13 +12,15 @@ using static System.StringComparison;
 using System.ComponentModel;
 using static Utils.StringUtils;
 using static System.IO.File;
+using System.Diagnostics;
 
 namespace Data {
     ///<summary>DataManager manages methods that performs CRUD operations on the Database class.</summary>
     public abstract class DataManager {
+        public static Stopwatch stopwatch = new Stopwatch();
         public static void SearchItems(string[] input) {
             if(input.Length < 2) {
-                ThrowError("No tables searched, please type HELP for more information regarding search command formatting.");
+                //ThrowError("No tables searched, please type HELP for more information regarding search command formatting.");
             } else {
                 var table = tables[input[1].ParseToTableName()];
                 SearchByFields(input.Skip(2).ToArray(), table);
@@ -27,7 +29,7 @@ namespace Data {
 
         public static void SearchByFields<T>(string[] fields, List<T> table) {
             if(fields.Count() == 0) {
-                Output(table); 
+                DisplaySearchResults(table); 
             }
             else if(fields.Length % 2 == 0) {
                 ListDictionary searchFields = new ListDictionary();
@@ -45,17 +47,18 @@ namespace Data {
                     return true;
                 });
 
-                Output<T>(filtered.ToList());
+                DisplaySearchResults<T>(filtered.ToList());
             } else {
-                ThrowError($"Field {fields.Last()} has no value. Please type HELP for more details on using the search command.");
+                //ThrowError($"Field {fields.Last()} has no value. Please type HELP for more details on using the search command.");
             }
         }
 
-        public static void Output<T>(List<T> entities) {
-            Console.WriteLine($"Total results found: {entities.Count()}");
+        public static void DisplaySearchResults<T>(List<T> entities) {
+            
             foreach(var o in entities) {
                 o.ToConsoleString();
             }
+            Console.WriteLine($"Total results found: {entities.Count()}");
             Console.WriteLine("End of search.");
         }
     }

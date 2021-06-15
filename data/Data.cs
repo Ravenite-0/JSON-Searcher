@@ -1,14 +1,10 @@
-using System.Collections.Generic;
 using Model;
+using System.Collections.Generic;
 using System;
-using Utils;
-using static System.IO.File;
-using static Newtonsoft.Json.JsonConvert;
-using static System.StringComparison;
-using System.Linq;
-using System.Reflection;
-using static Utils.Constants;
 using System.ComponentModel;
+using System.Linq;
+using static Utils.Constants;
+using static Utils.CmdUtils;
 using static Utils.JsonUtils;
 
 namespace Data {
@@ -26,12 +22,23 @@ namespace Data {
 
         [Description("Imports data from the json folder into the database."),Category("Data")]
         public static void ImportEntitiesFromJson(string[] filepaths) {
-            foreach(var fp in filepaths) {
-                string fileName = fp.Split('\\').Last();
-                Console.WriteLine($"Importing from {fp}...");
-                tables[fileName].AddRange(ParseJsonToTable(tables[fileName].GetType(), fp));
+            try{
+                foreach(var fp in filepaths) {
+                    Console.WriteLine($"Importing from {fp}...");
+                    string fileName = fp.Split('\\').Last();
+                    string fileContent = System.IO.File.ReadAllText(fp);
+                    if(!String.IsNullOrWhiteSpace(fileContent)) {
+                        tables[fileName].AddRange(ParseJsonToTable(tables[fileName].GetType(), fileContent));
+                    } else {
+                        ThrowError($"{fileName} does not have any content. Please double check your files in json folder.");
+                    }
+                }
+            } catch(Exception e) {
+                if(e is KeyNotFoundException) {
+                    ThrowError("Files in the json folder must be of .json format. Type RELOAD after you've gotten the right files in the json folder", e);
+                }
             }
-            Console.WriteLine("All files have been imported!");
+            Console.WriteLine("All valid files have been imported!");
         }
     }
 }
