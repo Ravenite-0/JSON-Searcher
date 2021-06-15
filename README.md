@@ -26,5 +26,8 @@ Below are the steps to get this application started:
   * Only JSON files are supplied into the *json* folder.
   * Your search values cannot contain spaces.
   * All JSON schema attributes are compulsory.
+  * Only _id fields are compulsory, all other fields are optional.
+  * Since multiple-search fields are included, user needs to type '%' only to indicate that this searches for fields that are empty.
+  * Because of this constraint, I assume no values in any JSON files will contain %.
 
 

@@ -8,6 +8,7 @@ namespace Utils {
                         CMD_SEARCH = "search",
                         TBL_ORGANIZATION = "organizations",
                         TBL_TICKET = "tickets",
-                        TBL_USER = "users";
+                        TBL_USER = "users",
+                        EMPTY_SEARCH_TERM = "%";
   }
 }

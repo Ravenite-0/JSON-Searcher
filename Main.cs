@@ -11,6 +11,7 @@ public abstract class Program {
 
     while(!closeApp) {
       ExecuteCommand(Console.ReadLine());
+      Console.ForegroundColor = ConsoleColor.White;
     }
   }
 }
