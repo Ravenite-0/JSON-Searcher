@@ -13,6 +13,7 @@ using System.ComponentModel;
 using static Utils.StringUtils;
 using static System.IO.File;
 using System.Diagnostics;
+using static Utils.ConsoleUtils;
 
 namespace Data {
     ///<summary>DataManager manages methods that performs CRUD operations on the Database class.</summary>
@@ -54,7 +55,6 @@ namespace Data {
         }
 
         public static void DisplaySearchResults<T>(List<T> entities) {
-            
             foreach(var o in entities) {
                 o.ToConsoleString();
             }

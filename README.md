@@ -22,6 +22,7 @@ Below are the steps to get this application started:
 
 ## Assumptions
   * Invalid JSON files are detected, but valid JSON strings must have a corresponding class in the *model* folder.
+  * JSON object list must be stored within an array [].
   * Only JSON files are supplied into the *json* folder.
   * You cannot search for fields that contain spaces.
 
