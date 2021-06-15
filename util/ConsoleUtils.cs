@@ -1,10 +1,5 @@
-using static Data.Database;
-using static Data.DataManager;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using static Utils.Constants;
-using static Program;
+using static System.Environment;
 using static System.String;
 
 namespace Utils {
@@ -18,30 +13,28 @@ namespace Utils {
       Console.WriteLine(str);
     }
 
-    public static void OutputErrorToConsole(string err) {
-      SetConsoleTextColor(ConsoleColor.Red);
-      Console.WriteLine(err);
-      SetConsoleTextColor(ConsoleColor.White);
-    }
-
-    public static void OutputWarningToConsole(string warning) {
+    public static void OutputWarningToConsole(string str) {
       SetConsoleTextColor(ConsoleColor.Yellow);
-      Console.WriteLine(warning);
-      SetConsoleTextColor(ConsoleColor.White);
+      Console.WriteLine(str);
     }
 
-    [Description("Displays exception message to user via console."),Category("Cmd")]
-      public static void ThrowError(string err, Exception e = null) {
-        OutputErrorToConsole(err);
-        OutputWarningToConsole(e.Message.ToString());
-      }
+    public static void OutputPassToConsole(string str) {
+      SetConsoleTextColor(ConsoleColor.Green);
+      Console.WriteLine(str);
+    }
 
-        [Description("Displays provided object's properties and respective values via console."),Category("Cmd")]
-        public static void ToConsoleString(this object entity) {
-            foreach(var property in entity.GetType().GetProperties()) {
-                Console.WriteLine($"{property.Name.ToString()}  ->  {property.GetValue(entity).ToString()}");
-            }
-            Console.WriteLine("==================================================");
-        }
+    public static void OutputExceptionToConsole(Exception e, string customString = "", bool showSystemException = true) {
+      SetConsoleTextColor(ConsoleColor.Red);
+      Console.WriteLine((showSystemException) ? customString + NewLine + e.Message : customString);
+      //For debugging only.
+      //Console.WriteLine(e);
+    }
+
+    public static void OutputEntity(this object entity) {
+      foreach(var property in entity.GetType().GetProperties()) {
+        OutputToConsole(Format("{0, -20} -> {1}", property.Name.ToString(), property.GetValue(entity).ToString()));
+      }
+      OutputToConsole($"===================================================================================================={NewLine}");
+    }
   }
 }

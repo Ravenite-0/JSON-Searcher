@@ -4,44 +4,68 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using static Utils.Constants;
-using static Utils.CmdUtils;
 using static Utils.JsonUtils;
 using static Utils.FileUtils;
 using static Utils.ConsoleUtils;
-namespace Data {
-    ///<summary>Data class manages the storage of imported valid JSON data.</summary>
-    public class Database {
-        public static Dictionary<string, dynamic> tables = new Dictionary<string, dynamic> {
-            {$"{TBL_ORGANIZATION}.json", new List<Organization>()},
-            {$"{TBL_TICKET}.json", new List<Ticket>()},
-            {$"{TBL_USER}.json", new List<User>()}
-        };
+using static System.StringComparer;
+using static System.IO.File;
+using static System.String;
+using static Utils.StringUtils;
+using static System.Environment;
 
-        [Description("Imports data from the json folder into the database."),Category("Data")]
-        public static void ImportEntitiesFromJson() {
-            try{
-                string[] filepaths =  GetAllJsonFilepaths();
-                    if(filepaths.Count() > 0) {
-                        foreach(var fp in filepaths) {
-                            Console.WriteLine($"Importing from {fp}...");
-                            string fileName = fp.Split('\\').Last();
-                            string fileContent = System.IO.File.ReadAllText(fp);
-                            if(!String.IsNullOrWhiteSpace(fileContent)) {
-                                tables[fileName].AddRange(ParseJsonToTable(tables[fileName].GetType(), fileContent));
-                            } else {
-                                ThrowError($"{fileName} does not have any content. Please double check your files in json folder.");
-                            }
-                        }
-                    } else {
-                        //ThrowError("No files found (Did you empty the folder by accident)? Type reload to try again");
-                    }
-                
-            } catch(Exception e) {
-                if(e is KeyNotFoundException) {
-                    ThrowError("Files in the json folder must be of .json format. Type RELOAD after you've gotten the right files in the json folder", e);
-                }
+namespace Data {
+  ///<summary>Data class imports and stores successfully imported valid JSON data.</summary>
+  public class Database {
+    public static Dictionary<string, dynamic> tables = new Dictionary<string, dynamic>(OrdinalIgnoreCase){
+      {$"{TBL_ORGANIZATION}.json", new List<Organization>()},
+      {$"{TBL_TICKET}.json", new List<Ticket>()},
+      {$"{TBL_USER}.json", new List<User>()}
+    };
+
+    [Description("Imports data from the json folder into the database."),Category("Data")]
+    public static void ImportEntitiesFromJson() {
+      OutputToConsole("Starting file import" + NewLine);
+      int passedImports = 0;
+      string[] filepaths =  GetAllJsonFilepaths();
+
+      try {
+        if(filepaths.Length > 0) {
+          foreach(var fp in filepaths) {
+            string fileName = fp.Split('\\').Last();
+            OutputToConsole($"Importing from {fileName}...");
+
+            string fileContent = ReadAllText(fp);
+            if(!IsNullOrWhiteSpace(fileContent)) {
+              tables[fileName].AddRange(ParseJsonToTable(tables[fileName].GetType(), fileContent));
+              if(tables[fileName].Count < 1) {
+                throw new NullReferenceException();
+              }
+            } else {
+              throw new NullReferenceException();
             }
-            Console.WriteLine("All valid files have been imported!");
+            
+            OutputPassToConsole("SUCCESS!");
+            passedImports++;
+          }
+        } else {
+          throw new WarningException();
+        } 
+      } catch(Exception e) {
+        if(e is WarningException) {
+          OutputWarningToConsole("Empty json folder detected.");
+        } else if (e is KeyNotFoundException) {
+          OutputExceptionToConsole(e, "This file has incorrect naming (File name must be [className].json):");
+        } else if (e is NullReferenceException) {
+          OutputExceptionToConsole(e, "This JSON file is empty.", false);
         }
+      }
+
+      string parseResult = GetParseFileResults(passedImports, filepaths.Length);
+      if(passedImports == filepaths.Length) {
+        OutputToConsole($"All files have been imported. ({parseResult})");
+      } else {
+        OutputWarningToConsole($"Not all files were successfully imported. ({parseResult})");
+      }
     }
+  }
 }

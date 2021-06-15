@@ -15,7 +15,7 @@ Below are the steps to get this application started:
 
 
 ## Design
-  * The *json* folder contains the raw json files which can be picked up by the application. You can also provide customized inputs into the    system.
+  * The *json* folder contains the raw json files which can be picked up by the application. You can also provide customized inputs into the system.
   * The *model* folder contains class files that represents the json schema so they can store JSON objects.
   * The *data* folder stores data parsed from the JSON files once they are loaded. It also contains the main logic for searching those fields.
   * The *utils* folder contains different methods that assists the functions in the above folders.
@@ -24,6 +24,7 @@ Below are the steps to get this application started:
   * Invalid JSON files are detected, but valid JSON strings must have a corresponding class in the *model* folder.
   * JSON object list must be stored within an array [].
   * Only JSON files are supplied into the *json* folder.
-  * You cannot search for fields that contain spaces.
+  * Your search values cannot contain spaces.
+  * All JSON schema attributes are compulsory.
 
 

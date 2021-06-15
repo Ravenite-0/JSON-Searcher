@@ -1,5 +1,5 @@
 using static System.StringComparison;
-
+using static System.String;
 namespace Utils {
   ///<summary>Manages methods that performs operations on strings.</summary>
   public static class StringUtils {
@@ -14,5 +14,8 @@ namespace Utils {
         
     public static string ParseToTableName(this string str) =>
       $"{str.ToLower()}.json";
+
+    public static string GetParseFileResults(int passedFiles, int totalFiles) =>
+      Format("Imported: {0} -- Failed: {1}", passedFiles, totalFiles - passedFiles);
   }    
 }
