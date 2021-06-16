@@ -1,30 +1,25 @@
-using static Utils.Constants;
 using static Data.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.Specialized;
 using System.Collections;
-using Model;
 using System.Reflection;
-using static Utils.CmdUtils;
-using static System.StringComparison;
-using System.ComponentModel;
 using static Utils.StringUtils;
-using static System.IO.File;
-using System.Diagnostics;
 using static Utils.ConsoleUtils;
+using static System.Environment;
 
 namespace Data {
   ///<summary>DataManager manages methods that performs CRUD operations on the Database class.</summary>
-  public abstract class DataManager {
-    public static void SearchItems(string[] input) {
+  public static class DataManager {
+    public static void ValidateSearch(string[] input) {
       try {
         if(input.Length < 2) {
           throw new ArgumentNullException();
+        } else if (input.Length == 2) {
+          OutputAllResults(input[1].ParseToTableName());
         } else {
-          var table = tables[input[1].ParseToTableName()];
-          SearchByFields(input.Skip(2).ToArray(), table);
+          //SearchAndOutputResults(input);
         }
       } catch(Exception e) {
         if(e is ArgumentNullException) {
@@ -37,37 +32,44 @@ namespace Data {
       }
     }
 
-    public static void SearchByFields<T>(string[] fields, List<T> table) {
-      try {
-        if(fields.Length > 0) {
-          ListDictionary searchFields = new ListDictionary();
-          for(int i = 0; i < fields.Length; i++) {
-            searchFields.Add(fields[i], fields[++i]);
-          }
+    internal static void OutputAllResults(string tableKey) {
+      foreach(var row in tables[tableKey].content) {
+        OutputToConsole($"{tableKey}:{NewLine}");
+        OutputEntity(row);
+        GetAllRelatedEntities(tableKey, row, tables[tableKey].foreignKeyFormats);
+      }
+    }
 
-          var tableResults = table.Where(row => {
-            foreach(DictionaryEntry field in searchFields) {
-              if(!row.GetType().GetProperty(field.Key.ToString()).GetValue(row).ToString().Contains(field.Value.ToString())) {
-                return false;
+    internal static void GetAllRelatedEntities(string tableKey, object row, List<string> foreignKeys) {
+      string rowID = row.GetType().GetProperty("_id").GetValue(row).ToString();
+      foreach(var table in tables) {
+        if(table.Key != tableKey) {
+          foreach(var tester in table.Value.content) {
+            foreach(var fk in foreignKeys) {
+              var test = tester.GetType().GetProperty(fk).GetValue(tester);
+              if((tester.GetType().GetProperty(fk).GetValue(tester) ?? "").ToString() == rowID) {
+                OutputEntity(tester);
+                break;
               }
             }
-            return true;
-          });
-
-          DisplaySearchResults<T>(tableResults.ToList());
-        } else {
-          DisplaySearchResults(table); 
-        }
-      } catch (Exception e) {
-        if(e is IndexOutOfRangeException) {
-          OutputExceptionToConsole(e, $"Your search field {fields.Last()} had no search value (Did you forget to use % to search empty fields?):");
+          }
         }
       }
     }
 
-    public static void DisplaySearchResults<T>(List<T> entities) {
+    
+          // var tableResults = table.Where(row => {
+          //   foreach(DictionaryEntry field in searchFields) {
+          //     if(!row.GetType().GetProperty(field.Key.ToString()).GetValue(row).ToString().Contains(field.Value.ToString())) {
+          //       return false;
+          //     }
+          //   }
+          //   return true;
+          // });
+        
+    public static void DisplaySearchResults<T>(this List<T> entities) {
       foreach(var o in entities) {
-        o.OutputEntity();
+        OutputEntity(o);
       }
       Console.WriteLine($"Total results found: {entities.Count()}");
       Console.WriteLine("End of search.");

@@ -12,15 +12,38 @@ using static System.IO.File;
 using static System.String;
 using static Utils.StringUtils;
 using static System.Environment;
+using System.Reflection;
 
 namespace Data {
   ///<summary>Data class imports and stores successfully imported valid JSON data.</summary>
   public class Database {
-    public static Dictionary<string, dynamic> tables = new Dictionary<string, dynamic>(OrdinalIgnoreCase){
-      {$"{TBL_ORGANIZATION}.json", new List<Organization>()},
-      {$"{TBL_TICKET}.json", new List<Ticket>()},
-      {$"{TBL_USER}.json", new List<User>()}
-    };
+
+    //This table
+    public struct TableProperties {
+      public List<dynamic> content;
+      public Type type;
+      public List<string> foreignKeyFormats;
+
+      public TableProperties(List<dynamic> content, List<string> foreignKeyFormats, Type type) {
+        this.content = content;
+        this.foreignKeyFormats = foreignKeyFormats;
+        this.type = type;
+      }
+    }
+
+    /*
+      This dictionary holds the table key and its respective type, the imported data list, as well as the filter ID for other tables.
+      Filter IDs are representations of how the corresponding table's _id property are used as foreign keys in other tables.
+    */
+    public static Dictionary<string, TableProperties> tables =
+      new Dictionary<string, TableProperties>() {
+        { $"{TBL_ORGANIZATION}.json", new TableProperties(
+            new List<dynamic>(), new List<string>() {"organization_id"}, new List<Organization>().GetType()) },
+        { $"{TBL_TICKET}.json", new TableProperties(
+            new List<dynamic>(), new List<string>(), new List<Ticket>().GetType()) },
+        { $"{TBL_USER}.json", new TableProperties(
+          new List<dynamic>(), new List<string>() {"submitter_id","assignee_id"}, new List<User>().GetType()) },
+      };
 
     [Description("Imports data from the json folder into the database."),Category("Data")]
     public static void ImportEntitiesFromJson() {
@@ -36,14 +59,14 @@ namespace Data {
 
             string fileContent = ReadAllText(fp);
             if(!IsNullOrWhiteSpace(fileContent)) {
-              tables[fileName].AddRange(ParseJsonToTable(tables[fileName].GetType(), fileContent));
-              if(tables[fileName].Count < 1) {
+              var test = ParseJsonToTable(tables[fileName].type, fileContent);
+              tables[fileName].content.AddRange(ParseJsonToTable(tables[fileName].type, fileContent));
+              if(tables[fileName].content.Count < 1) {
                 throw new NullReferenceException();
               }
             } else {
               throw new NullReferenceException();
             }
-            
             OutputPassToConsole("SUCCESS!");
             passedImports++;
           }
@@ -56,7 +79,7 @@ namespace Data {
         } else if (e is KeyNotFoundException) {
           OutputExceptionToConsole(e, "This file has incorrect naming (File name must be [className].json):");
         } else if (e is NullReferenceException) {
-          OutputExceptionToConsole(e, "This JSON file is empty.", false);
+          OutputExceptionToConsole(e, "This JSON file is empty.");
         }
       }
 

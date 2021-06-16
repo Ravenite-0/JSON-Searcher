@@ -29,7 +29,7 @@ namespace Utils {
           (string[] input) => ImportEntitiesFromJson())},
         {CMD_SEARCH, new KeyValuePair<string, Action<string[]>>(
           "search table field value [field value]... Searches a table with at least 1 field with value as filter",
-          (string[] input) => SearchItems(input))}
+          (string[] input) => ValidateSearch(input))}
     };
 
     public static void ExecuteCommand(string input) {
@@ -49,7 +49,7 @@ namespace Utils {
     }
 
     [Description("Displays the command dictionary above to user via console."),Category("Cmd")]
-    public static void DisplayHelpCommand() {
+    internal static void DisplayHelpCommand() {
       foreach(var cmd in commands) {
         OutputToConsole(Format("{0, -20} {1}", cmd.Key, cmd.Value.Key));
       }

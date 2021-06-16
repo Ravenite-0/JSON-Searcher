@@ -5,7 +5,7 @@ using static System.String;
 namespace Utils {
   ///<summary>ConsoleUtils manages interactions (I/O) related methods.</summary>
   public static class ConsoleUtils {
-    public static void SetConsoleTextColor(ConsoleColor color) =>
+    internal static void SetConsoleTextColor(ConsoleColor color) =>
       Console.ForegroundColor = color;
 
     public static void OutputToConsole(string str) {
@@ -25,14 +25,14 @@ namespace Utils {
 
     public static void OutputExceptionToConsole(Exception e, string customString = "", bool showSystemException = true) {
       SetConsoleTextColor(ConsoleColor.Red);
-      Console.WriteLine((showSystemException) ? customString + NewLine + e.Message : customString);
+      //Console.WriteLine((showSystemException) ? customString + NewLine + e.Message : customString);
       //For debugging only.
-      //Console.WriteLine(e);
+      Console.WriteLine(e);
     }
 
-    public static void OutputEntity(this object entity) {
+    public static void OutputEntity(object entity) {
       foreach(var property in entity.GetType().GetProperties()) {
-        OutputToConsole(Format("{0, -20} -> {1}", property.Name.ToString(), property.GetValue(entity).ToString()));
+        OutputToConsole(Format("{0, -20} -> {1}", (property.Name ?? "").ToString(), (property.GetValue(entity) ?? "").ToString()));
       }
       OutputToConsole($"===================================================================================================={NewLine}");
     }
