@@ -5,8 +5,8 @@ using System;
 ///<summary>Manages methods that involves managing different property and object types.</summary>
 namespace Utils {
   public static class SysUtils {
-    public static bool IsObjectList(PropertyInfo p) =>
-      (typeof(IList<dynamic>).IsAssignableFrom(p.PropertyType));
+    public static bool IsObjectStringList(PropertyInfo p) =>
+      (typeof(List<string>).IsAssignableFrom(p.PropertyType));
     
     public static bool IsObjectDateTime(PropertyInfo p) =>
       (typeof(DateTime).IsAssignableFrom(p.PropertyType));

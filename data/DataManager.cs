@@ -67,11 +67,10 @@ namespace Data {
     }
 
     internal static bool CalculateExpectedProperty(PropertyInfo p, dynamic obj, string condition) {
-      if(IsObjectList(p)) {
-        return Enumerable.ToList(p.GetValue(obj)).Contains(condition);
+      if(IsObjectStringList(p)) {
+        //TODO - Resolve case sensitivity
+        return Enumerable.ToList<string>(p.GetValue(obj)).Contains(condition);
       } else if (IsObjectDateTime(p)) {
-        var test = DateTime.Parse(ToStringIncNull(p.GetValue(obj))).Date;
-        var test2 = DateTime.Parse(condition).Date;
         return DateTime.Parse(ToStringIncNull(p.GetValue(obj))).Date == DateTime.Parse(condition).Date;
       } else {
         return ContainsIgnoreCase(ToStringIncNull(p.GetValue(obj)), condition);
