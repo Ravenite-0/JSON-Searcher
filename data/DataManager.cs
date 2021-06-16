@@ -70,7 +70,7 @@ namespace Data {
       if(IsObjectList(p)) {
         return Enumerable.ToList(p.GetValue(obj)).Contains(condition);
       } else if (IsObjectDateTime(p)) {
-        return DateTime.Parse(ToStringIncNull(p.GetValue(obj))).Date == DateTime.Parse(obj).Date;
+        return DateTime.Parse(ToStringIncNull(p.GetValue(obj))).Date == DateTime.Parse(ToStringIncNull(p.GetValue(obj))).Date;
       } else {
         return ContainsIgnoreCase(ToStringIncNull(p.GetValue(obj)), condition);
       }
