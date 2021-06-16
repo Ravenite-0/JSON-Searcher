@@ -9,10 +9,11 @@ using static Utils.StringUtils;
 using static Utils.ConsoleUtils;
 using static System.Environment;
 using static Utils.Constants;
+using static Utils.SysUtils;
 
 namespace Data {
   ///<summary>DataManager manages methods that performs CRUD operations on the Database class.</summary>
-  public static class DataManager {
+  public static class SearchByProperty {
     public static void ValidateSearch(string[] input) {
       try {
         if(input.Length < 2) {
@@ -56,12 +57,23 @@ namespace Data {
 
       return baseTable.Where(row => {
         foreach(DictionaryEntry field in searchFields) {
-          if(!row.GetType().GetProperty(field.Key.ToString()).GetValue(row).ToString().Contains(field.Value.ToString())) {
+          if(!CalculateExpectedProperty(row.GetType().GetProperty(field.Key.ToString()), row, field.Value.ToString())) {
+          //if(!.GetValue(row).ToString().Contains(field.Value.ToString())) {
             return false;
           }
         }
         return true;
       }).ToList();
+    }
+
+    internal static bool CalculateExpectedProperty(PropertyInfo p, dynamic obj, string condition) {
+      if(IsObjectList(p)) {
+        return Enumerable.ToList(p.GetValue(obj)).Contains(condition);
+      } else if (IsObjectDateTime(p)) {
+        return DateTime.Parse(ToStringIncNull(p.GetValue(obj))).Date == DateTime.Parse(obj).Date;
+      } else {
+        return ContainsIgnoreCase(ToStringIncNull(p.GetValue(obj)), condition);
+      }
     }
 
     internal static void OutputRelatedEntities(string tableKey, object row, List<string> pKeys, List<string> fKeys) {
