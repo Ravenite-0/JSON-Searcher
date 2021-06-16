@@ -6,7 +6,7 @@ using System;
 namespace Utils {
   public static class SysUtils {
     public static bool IsObjectList(PropertyInfo p) =>
-      p.IsCollectible;
+      (typeof(IList<dynamic>).IsAssignableFrom(p.PropertyType));
     
     public static bool IsObjectDateTime(PropertyInfo p) =>
       (typeof(DateTime).IsAssignableFrom(p.PropertyType));
