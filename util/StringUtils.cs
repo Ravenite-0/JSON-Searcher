@@ -19,5 +19,8 @@ namespace Utils {
 
     public static string GetParseFileResults(int passedFiles, int totalFiles) =>
       Format("Imported: {0} -- Failed: {1}", passedFiles, totalFiles - passedFiles);
+
+    public static string ParseEmptySearchTag(string str) =>
+      (str == "%") ? "" : str;
   }    
 }

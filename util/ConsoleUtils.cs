@@ -29,6 +29,11 @@ namespace Utils {
       //For debugging only.
       Console.WriteLine(e);
     }
+    
+    public static void OutputSeparatorsToConsole(string str) {
+      SetConsoleTextColor(ConsoleColor.Cyan);
+      Console.WriteLine(str);
+    }
 
     public static void OutputEntity(object entity) {
       foreach(var property in entity.GetType().GetProperties()) {

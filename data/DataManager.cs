@@ -8,6 +8,7 @@ using System.Reflection;
 using static Utils.StringUtils;
 using static Utils.ConsoleUtils;
 using static System.Environment;
+using static Utils.Constants;
 
 namespace Data {
   ///<summary>DataManager manages methods that performs CRUD operations on the Database class.</summary>
@@ -16,10 +17,8 @@ namespace Data {
       try {
         if(input.Length < 2) {
           throw new ArgumentNullException();
-        } else if (input.Length == 2) {
-          OutputAllResults(input[1].ParseToTableName());
         } else {
-          //SearchAndOutputResults(input);
+          OutputResults(input);
         }
       } catch(Exception e) {
         if(e is ArgumentNullException) {
@@ -32,15 +31,40 @@ namespace Data {
       }
     }
 
-    internal static void OutputAllResults(string tableKey) {
+    internal static void OutputResults(string[] input) {
+      var tableKey = input[1].ParseToTableName();
+      var baseTable = (input.Length == 2) ? tables[tableKey].content : FilterBaseTable(tables[tableKey].content, input);
+
+      OutputSeparatorsToConsole(OUTPUT_MAJOR_LINESPLIT);
       OutputToConsole($"Searching in {tableKey}:{NewLine}");
-      foreach(var row in tables[tableKey].content) {
+
+      foreach(var row in baseTable) {
         OutputEntity(row);
-        GetAllRelatedEntities(tableKey, row, tables[tableKey].pKeys, tables[tableKey].fKeys);
+        OutputRelatedEntities(tableKey, row, tables[tableKey].pKeys, tables[tableKey].fKeys);
       }
+
+      OutputSeparatorsToConsole(OUTPUT_MAJOR_LINESPLIT);
+      OutputPassToConsole($"{baseTable.Count()} results found.");
+      OutputToConsole("End of search.");
     }
 
-    internal static void GetAllRelatedEntities(string tableKey, object row, List<string> pKeys, List<string> fKeys) {
+    internal static List<dynamic> FilterBaseTable(List<dynamic> baseTable, string[] input) {
+      ListDictionary searchFields = new ListDictionary();
+      for (int i = 2; i < input.Length; i++) {
+        searchFields.Add(input[i], input[++i]);
+      }
+
+      return baseTable.Where(row => {
+        foreach(DictionaryEntry field in searchFields) {
+          if(!row.GetType().GetProperty(field.Key.ToString()).GetValue(row).ToString().Contains(field.Value.ToString())) {
+            return false;
+          }
+        }
+        return true;
+      }).ToList();
+    }
+
+    internal static void OutputRelatedEntities(string tableKey, object row, List<string> pKeys, List<string> fKeys) {
       List<string> pValues = pKeys.Select(k => ToStringIncNull(row.GetType().GetProperty("_id").GetValue(row))).ToList();
       var pKeyValues = pKeys.Zip(pValues, (k,v) => new {
         key = k,
@@ -54,6 +78,9 @@ namespace Data {
 
       foreach(var table in tables) {
         if(table.Key != tableKey) {
+          OutputToConsole(OUTPUT_LARGE_LINESPLIT);
+          OutputToConsole($"Searching for related items from {table.Key}:");
+
           foreach(var resultRow in table.Value.content) {
             if(pKeyValues.Any(pkv => {
                 var test = ToStringIncNull(resultRow.GetType().GetProperty(pkv.key).GetValue(resultRow));
@@ -70,16 +97,9 @@ namespace Data {
                 break;
             }
           }
+          OutputToConsole(OUTPUT_LARGE_LINESPLIT);
         }
       }
-    }
-
-    public static void DisplaySearchResults<T>(this List<T> entities) {
-      foreach(var o in entities) {
-        OutputEntity(o);
-      }
-      Console.WriteLine($"Total results found: {entities.Count()}");
-      Console.WriteLine("End of search.");
     }
   }
 }
