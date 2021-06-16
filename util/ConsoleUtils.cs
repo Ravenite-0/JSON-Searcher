@@ -1,6 +1,9 @@
 using System;
 using static Utils.Constants;
 using static System.String;
+using static Utils.SysUtils;
+using System.Linq;
+using static Utils.StringUtils;
 
 namespace Utils {
   ///<summary>ConsoleUtils manages interactions (I/O) related methods.</summary>
@@ -35,9 +38,12 @@ namespace Utils {
       Console.WriteLine(str);
     }
 
-    public static void OutputEntity(object entity) {
+    public static void OutputEntity(dynamic entity) {
       foreach(var property in entity.GetType().GetProperties()) {
-        OutputToConsole(Format("{0, -20} -> {1}", (property.Name ?? "").ToString(), (property.GetValue(entity) ?? "").ToString()));
+        OutputToConsole(Format("{0, -20} -> {1}", (property.Name ?? "").ToString(), 
+          (IsObjectStringList(property)) ?
+            Join(',', Enumerable.ToList<string>(property.GetValue(entity))) :
+            ToStringIncNull(property.GetValue(entity))));
       }
       OutputToConsole(OUTPUT_SMALL_LINESPLIT);
     }
