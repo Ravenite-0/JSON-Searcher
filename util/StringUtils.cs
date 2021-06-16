@@ -11,7 +11,9 @@ namespace Utils {
         
     public static bool ContainsIgnoreCase(this string str, string condition) =>
       str.Contains(condition, InvariantCultureIgnoreCase);
-        
+      
+    public static string ToStringIncNull(object obj) =>
+      (obj is null) ? "" : obj.ToString();
     public static string ParseToTableName(this string str) =>
       $"{str.ToLower()}.json";
 

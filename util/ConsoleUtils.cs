@@ -1,5 +1,5 @@
 using System;
-using static System.Environment;
+using static Utils.Constants;
 using static System.String;
 
 namespace Utils {
@@ -34,7 +34,7 @@ namespace Utils {
       foreach(var property in entity.GetType().GetProperties()) {
         OutputToConsole(Format("{0, -20} -> {1}", (property.Name ?? "").ToString(), (property.GetValue(entity) ?? "").ToString()));
       }
-      OutputToConsole($"===================================================================================================={NewLine}");
+      OutputToConsole(OUTPUT_SMALL_LINESPLIT);
     }
   }
 }

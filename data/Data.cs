@@ -22,11 +22,13 @@ namespace Data {
     public struct TableProperties {
       public List<dynamic> content;
       public Type type;
-      public List<string> foreignKeyFormats;
+      public List<string> pKeys;
+      public List<string> fKeys;
 
-      public TableProperties(List<dynamic> content, List<string> foreignKeyFormats, Type type) {
+      public TableProperties(List<dynamic> content, List<string> pKeys, List<string> fKeys, Type type) {
         this.content = content;
-        this.foreignKeyFormats = foreignKeyFormats;
+        this.pKeys = pKeys;
+        this.fKeys = fKeys;
         this.type = type;
       }
     }
@@ -38,11 +40,11 @@ namespace Data {
     public static Dictionary<string, TableProperties> tables =
       new Dictionary<string, TableProperties>() {
         { $"{TBL_ORGANIZATION}.json", new TableProperties(
-            new List<dynamic>(), new List<string>() {"organization_id"}, new List<Organization>().GetType()) },
+            new List<dynamic>(), new List<string>() {"organization_id"}, new List<string>(), new List<Organization>().GetType()) },
         { $"{TBL_TICKET}.json", new TableProperties(
-            new List<dynamic>(), new List<string>(), new List<Ticket>().GetType()) },
+            new List<dynamic>(), new List<string>(), new List<string>() {"submitter_id", "assignee_id", "organization_id"}, new List<Ticket>().GetType()) },
         { $"{TBL_USER}.json", new TableProperties(
-          new List<dynamic>(), new List<string>() {"submitter_id","assignee_id"}, new List<User>().GetType()) },
+          new List<dynamic>(), new List<string>(), new List<string>() {"organization_id"}, new List<User>().GetType()) },
       };
 
     [Description("Imports data from the json folder into the database."),Category("Data")]

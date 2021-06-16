@@ -33,40 +33,47 @@ namespace Data {
     }
 
     internal static void OutputAllResults(string tableKey) {
+      OutputToConsole($"Searching in {tableKey}:{NewLine}");
       foreach(var row in tables[tableKey].content) {
-        OutputToConsole($"{tableKey}:{NewLine}");
         OutputEntity(row);
-        GetAllRelatedEntities(tableKey, row, tables[tableKey].foreignKeyFormats);
+        GetAllRelatedEntities(tableKey, row, tables[tableKey].pKeys, tables[tableKey].fKeys);
       }
     }
 
-    internal static void GetAllRelatedEntities(string tableKey, object row, List<string> foreignKeys) {
-      string rowID = row.GetType().GetProperty("_id").GetValue(row).ToString();
+    internal static void GetAllRelatedEntities(string tableKey, object row, List<string> pKeys, List<string> fKeys) {
+      List<string> pValues = pKeys.Select(k => ToStringIncNull(row.GetType().GetProperty("_id").GetValue(row))).ToList();
+      var pKeyValues = pKeys.Zip(pValues, (k,v) => new {
+        key = k,
+        value = v
+      });
+      List<string> fValues = fKeys.Select(k => ToStringIncNull(row.GetType().GetProperty(k).GetValue(row))).ToList();
+      var fKeyValues = fKeys.Zip(fValues,(k,v) => new {
+        key = k,
+        value = v
+      });
+
       foreach(var table in tables) {
         if(table.Key != tableKey) {
-          foreach(var tester in table.Value.content) {
-            foreach(var fk in foreignKeys) {
-              var test = tester.GetType().GetProperty(fk).GetValue(tester);
-              if((tester.GetType().GetProperty(fk).GetValue(tester) ?? "").ToString() == rowID) {
-                OutputEntity(tester);
+          foreach(var resultRow in table.Value.content) {
+            if(pKeyValues.Any(pkv => {
+                var test = ToStringIncNull(resultRow.GetType().GetProperty(pkv.key).GetValue(resultRow));
+                return pkv.value == test;
+              }) ||
+              fKeyValues.Any(fkv => {
+                var fkProperty = resultRow.GetType().GetProperty(fkv.key);
+                if(fkProperty != null) {
+                  var test = fkProperty.GetValue(resultRow);
+                  return fkv.value == test;
+                } else {return false;}
+              })) {
+                OutputEntity(resultRow);
                 break;
-              }
             }
           }
         }
       }
     }
 
-    
-          // var tableResults = table.Where(row => {
-          //   foreach(DictionaryEntry field in searchFields) {
-          //     if(!row.GetType().GetProperty(field.Key.ToString()).GetValue(row).ToString().Contains(field.Value.ToString())) {
-          //       return false;
-          //     }
-          //   }
-          //   return true;
-          // });
-        
     public static void DisplaySearchResults<T>(this List<T> entities) {
       foreach(var o in entities) {
         OutputEntity(o);
