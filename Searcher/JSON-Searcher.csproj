@@ -3,7 +3,7 @@
     <LangVersion>preview</LangVersion>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>JSON_Searcher</RootNamespace>
+    <RootNamespace>Searcher</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>

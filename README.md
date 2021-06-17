@@ -19,11 +19,18 @@ These are the steps to set up the project on your local machine:
 ```
 > dotnet build
 ```
-4. Move to the directory where the application is stored:
+4. Create the logs folder in Searcher:
+```
+> cd Searcher
+```
+```
+> mkdir logs
+```
+5. Move to the directory where the application is stored:
 ```
 > cd bin/Debug/netcoreapp3.1
 ```
-5. Starting the application:
+6. Starting the application:
 ```
 > .\JSON-Searcher.exe
 ```
