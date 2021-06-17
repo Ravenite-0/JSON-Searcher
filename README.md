@@ -1,13 +1,32 @@
 # JSON-Searcher
 
-* [Starting the application](#Start)
+* [Setting up the application](#Setup)
 * [Using the application](#Features)
 * [Code Design](#Design)
 * [Assumptions](#Assumptions)
 
-## Start
-Below are the steps to get this application started:
-1. Clone this repo
+## Setup
+These are the steps to set up the project on your local machine:
+1. Clone the project into your local machine:
+```
+> git clone https://github.com/HZP1997/JSON-Searcher.git
+```
+2. Change your working directory to the cloned folder:
+```
+> cd JSON-Searcher
+```
+3. Build the application:
+```
+> dotnet build
+```
+4. Move to the directory where the application is stored:
+> cd bin/Debug/netcoreapp3.1
+5. Starting the application:
+```
+> .\JSON-Searcher.exe
+```
+* You can prevent typo errors at by typing JSON and keep pressing the TAB key until you get the right file to execute.
+* *OR* alternatively you can go to {host-directory-path}/bin/Debug/netcoreapp3.1 and click on JSON-Searcher.exe directly.
 
 ## Features
 1. Once you have the application set-up. You can use the list of available commands to start searching.
