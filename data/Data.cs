@@ -7,18 +7,16 @@ using static Utils.Constants;
 using static Utils.JsonUtils;
 using static Utils.FileUtils;
 using static Utils.ConsoleUtils;
-using static System.StringComparer;
 using static System.IO.File;
 using static System.String;
 using static Utils.StringUtils;
 using static System.Environment;
-using System.Reflection;
 
 namespace Data {
   ///<summary>Data class imports and stores successfully imported valid JSON data.</summary>
   public class Database {
 
-    //This table
+    //Stores search parameters and other variables for easier searching.
     public struct TableProperties {
       public List<dynamic> content;
       public Type type;
@@ -34,8 +32,8 @@ namespace Data {
     }
 
     /*
-      This dictionary holds the table key and its respective type, the imported data list, as well as the filter ID for other tables.
-      Filter IDs are representations of how the corresponding table's _id property are used as foreign keys in other tables.
+      This dictionary maps the file content to their respective object type list.
+      It also includes how the entities are related to other tables (Linking _id to various id foreign keys).
     */
     public static Dictionary<string, TableProperties> tables =
       new Dictionary<string, TableProperties>() {
@@ -47,7 +45,6 @@ namespace Data {
           new List<dynamic>(), new List<string>(), new List<string>() {"organization_id"}, new List<User>().GetType()) },
       };
 
-    [Description("Imports data from the json folder into the database."),Category("Data")]
     public static void ImportEntitiesFromJson() {
       OutputToConsole("Starting file import" + NewLine);
       int passedImports = 0;
@@ -87,7 +84,7 @@ namespace Data {
 
       string parseResult = GetParseFileResults(passedImports, filepaths.Length);
       if(passedImports == filepaths.Length) {
-        OutputToConsole($"All files have been imported. ({parseResult})");
+        OutputPassToConsole($"All files have been imported. ({parseResult})");
       } else {
         OutputWarningToConsole($"Not all files were successfully imported. ({parseResult})");
       }
