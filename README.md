@@ -53,7 +53,7 @@ These are the steps to set up the project on your local machine:
   * Starting the application will automatically load the existing files once.
 
 5. **search**: Performs searches based on your input:
-  * search table [field, value]... - Return results in the table that matches all field-value filters:
+    * search table [field, value]... - Return results in the table that matches all field-value filters:
 ```
 > search organizations [field, value]...
 ```
