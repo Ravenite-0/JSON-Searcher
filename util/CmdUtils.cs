@@ -30,7 +30,11 @@ namespace Utils {
           (string[] input) => ImportEntitiesFromJson())},
         {CMD_SEARCH, new KeyValuePair<string, Action<string[]>>(
           "search table [field value]... Searches a table with custom filters.",
-          (string[] input) => ValidateAndReturnSearchResults(input))}
+          (string[] input) => ValidateAndReturnSearchResults(input))},
+        {CMD_FIELDS, new KeyValuePair<string, Action<string[]>> (
+          "Returns the fields available for a table.",
+          (string[] input) => GetTableFields(input)
+        )}
     };
 
     public static void ExecuteCommand(string input) {

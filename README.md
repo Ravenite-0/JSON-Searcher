@@ -52,7 +52,12 @@ These are the steps to set up the project on your local machine:
   * *Note*: Files are imported from {host-directory-path}/JSON folder. So make sure you have the right files in it before reloading.
   * Starting the application will automatically load the existing files once.
 
-5. **search**: Performs searches based on your input:
+5. **fields**: Grabs all the fields within a json object:
+```
+> fields [tableName]...
+```
+  * No tableNames provided will give all currently existing entities' fields.
+6. **search**: Performs searches based on your input:
     * search table [field, value]... - Return results in the table that matches all field-value filters:
 ```
 > search organizations [field, value]...
@@ -86,9 +91,14 @@ These are the steps to set up the project on your local machine:
 
 &nbsp;
 ## Design
-  1. The *JSON* folder contains raw files from which the application imports files. You can also provide customized inputs into the system by replacing content in the default .json files.
-  2. The *model* folder contains class templates that represent their respective JSON object schemas.
-  3. The *utils* folder contains utility classes and methods that assist the application and make the code cleaner and more readable.
-  4. The *tests* folder contains various tests that cover multiple file and input scenarios.
-  5. The *data* folder manages data storage and search functionalities.
-  6. The commands and data are built using Dictionaries for minimal complexity and optimizes the load time.
+  * The _Configs.cs contains some settings you may find useful should you ever find the need to change it:
+    - The closeApp config is for checking if the app is running. **Do not touch**.
+    - The debugging config determines the exception displayed. *FALSE* only shows the exception message and *TRUE* will display the entire stacktrace.
+    - The logging config determines whether logs are stored per each **search**. *FALSE* will prevent any logging and *TRUE* will save the search results in /logs folder as a .yaml file.
+  * The *libs* folder contains library files retrieved from third-party source with references. As per the requirement no search libraries will be imported.
+  * The *JSON* folder contains raw files from which the application imports files. You can also provide customized inputs into the system by replacing content in the default .json files.
+  * The *model* folder contains class templates that represent their respective JSON object schemas.
+  * The *utils* folder contains utility classes and methods that assist the application and make the code cleaner and more readable.
+  * The *tests* folder contains various tests that cover multiple file and input scenarios.
+  * The *data* folder manages data storage and search functionalities.
+  * The commands and data are built using Dictionaries for minimal complexity and optimizes the load time.

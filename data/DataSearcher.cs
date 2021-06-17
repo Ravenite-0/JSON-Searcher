@@ -12,10 +12,42 @@ using static Utils.Constants;
 using static Utils.SysUtils;
 using static System.String;
 using static System.StringComparison;
+using static Utils.FileUtils;
+using System.IO;
 
 namespace Data {
   ///<summary>DataSearcher manages file search methods.</summary>
   public static class DataSearcher {
+
+    public static void GetTableFields(string[] input) {
+      try{
+        if(input.Length == 1) {
+          foreach(var table in tables) {
+            OutputTypeFields(table.Value.type.GetGenericArguments().Single(), table.Key);
+          }
+        } else {
+          foreach(string tableName in input.Skip(1)) {
+            if(!IsNullOrWhiteSpace(tableName)) {
+              var table = tables[tableName.ParseToTableName()];
+              OutputTypeFields(table.type.GetGenericArguments().Single(), tableName.ParseToTableName());
+            } else {
+              throw new NullReferenceException();
+            }
+          } 
+        }
+        OutputToConsole("End of search.");
+      } catch (Exception e) {
+        if (e is KeyNotFoundException) {
+          OutputExceptionToConsole(e, "This table cannot be found inside the database:");
+        } else if (e is NullReferenceException) {
+          OutputExceptionToConsole(e, "Empty table field found.", false);
+        }else {
+          OutputExceptionToConsole(e, "Oops! Something went wrong with table fields retrieval.");
+        }
+      }
+      
+    }
+
     public static void ValidateAndReturnSearchResults(string[] input) {
       try {
         if(input.Length < 2) {
@@ -35,20 +67,18 @@ namespace Data {
     }
 
     internal static void OutputSearchResults(string[] input) {
-      var tableKey = input[1].ParseToTableName();
-      var baseTable = (input.Length == 2) ? tables[tableKey].content : SearchBaseTable(tables[tableKey].content, input);
+        var tableKey = input[1].ParseToTableName();
+        var baseTable = (input.Length == 2) ? tables[tableKey].content : SearchBaseTable(tables[tableKey].content, input);
+        OutputToConsole($"Searching in {tableKey}:{NewLine}");
 
-      OutputSeparatorsToConsole(OUTPUT_MAJOR_LINESPLIT);
-      OutputToConsole($"Searching in {tableKey}:{NewLine}");
+        foreach(var row in baseTable) {
+          OutputEntity(row);
+          SearchAndOutputRelatedEntities(tableKey, row, tables[tableKey].pKeys, tables[tableKey].fKeys);
+        }
 
-      foreach(var row in baseTable) {
-        OutputEntity(row);
-        SearchAndOutputRelatedEntities(tableKey, row, tables[tableKey].pKeys, tables[tableKey].fKeys);
-      }
-
-      OutputSeparatorsToConsole(OUTPUT_MAJOR_LINESPLIT);
-      OutputPassToConsole($"{baseTable.Count()} results found.");
-      OutputToConsole("End of search.");
+        OutputSeparatorsToConsole(OUTPUT_MAJOR_LINESPLIT);
+        OutputPassToConsole($"{baseTable.Count()} results found.");
+        OutputToConsole("End of search.");
     }
 
     internal static List<dynamic> SearchBaseTable(List<dynamic> baseTable, string[] input) {
@@ -69,6 +99,8 @@ namespace Data {
       } catch (Exception e) {
         if (e is IndexOutOfRangeException) {
           OutputExceptionToConsole(e, $"Field {input.Last()} had no value provided");
+        } else if (e is NullReferenceException) {
+          OutputExceptionToConsole(e, $"One of the supplied field(s) not found in this table.", false);
         }
         //Exception found implies no results returned.
         return new List<dynamic>();
@@ -78,6 +110,9 @@ namespace Data {
     internal static bool CalculateExpectedProperty(dynamic entity, DictionaryEntry keyValue) {
       KeyValuePair<string, string> kpv = new KeyValuePair<string, string>(ToStringIncNull(keyValue.Key), ToStringIncNull(keyValue.Value));
       PropertyInfo p = GetPropertyFromEntity(entity, kpv.Key);
+      if(p is null) {
+        throw new NullReferenceException();
+      }
       if(IsObjectStringList(p)) {
         var list = Enumerable.ToList<string>(p.GetValue(entity));
         foreach(string str in list) {
@@ -94,6 +129,7 @@ namespace Data {
           ContainsIgnoreCase(ToStringIncNull(p.GetValue(entity)), kpv.Value);
       }
     }
+
 
     internal static void SearchAndOutputRelatedEntities(string tableKey, object row, List<string> pKeys, List<string> fKeys) {
       var pKeyValues = GenerateKeyValues(pKeys, row, true);
@@ -115,6 +151,7 @@ namespace Data {
             OutputEntity(result);
           }
           OutputToConsole(OUTPUT_LARGE_LINESPLIT);
+          OutputPassToConsole($"A total of {resultTable.Count()} records are related to {tableKey.RemoveTableName()} entity {GetValueFromEntityProperty(row, "_id")}");
         }
       }
     }

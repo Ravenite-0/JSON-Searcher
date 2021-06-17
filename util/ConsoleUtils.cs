@@ -16,28 +16,28 @@ namespace Utils {
 
     public static void OutputToConsole(string str) {
       SetConsoleTextColor(ConsoleColor.White);
-      Console.WriteLine(str);
+      Output.WriteLine(str);
     }
 
     public static void OutputWarningToConsole(string str) {
       SetConsoleTextColor(ConsoleColor.Yellow);
-      Console.WriteLine(str);
+      Output.WriteLine(str);
     }
 
     public static void OutputPassToConsole(string str) {
       SetConsoleTextColor(ConsoleColor.Green);
-      Console.WriteLine(str);
+      Output.WriteLine(str);
     }
 
     public static void OutputExceptionToConsole(Exception e, string customString = "", bool showSystemException = true) {
       SetConsoleTextColor(ConsoleColor.Red);
-      Console.WriteLine((debugMode) ? e : 
-                        ((showSystemException) ? customString + NewLine + e.Message : customString));
+      Output.WriteLine(((debugMode) ? e.ToString() : 
+                        ((showSystemException) ? customString + NewLine + e.Message : customString)));
     }
     
     public static void OutputSeparatorsToConsole(string str) {
       SetConsoleTextColor(ConsoleColor.Cyan);
-      Console.WriteLine(str);
+      Output.WriteLine(str);
     }
 
     public static void OutputEntity(dynamic entity) {
@@ -48,6 +48,15 @@ namespace Utils {
             ToStringIncNull(property.GetValue(entity))));
       }
       OutputToConsole(OUTPUT_SMALL_LINESPLIT);
+    }
+
+    public static void OutputTypeFields(Type p, string entityName) {
+      OutputToConsole($"Getting fields from {entityName}:");
+      var test = p.GetProperties();
+      foreach(var field in p.GetProperties()) {
+        OutputToConsole(ToStringIncNull(field.Name));
+      }
+      OutputToConsole(OUTPUT_LARGE_LINESPLIT);
     }
   }
 }

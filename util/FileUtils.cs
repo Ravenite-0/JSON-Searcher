@@ -2,6 +2,10 @@ using System.IO;
 using static System.IO.Directory;
 using static System.IO.Path;
 using static System.Reflection.Assembly;
+using static Utils.Config;
+using static System.DateTime;
+using System;
+using static Utils.StringUtils;
 
 namespace Utils {
   ///<summary>FileUtils manages methods that interacts with files in the system.</summary>

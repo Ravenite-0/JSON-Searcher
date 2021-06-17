@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Collections.Generic;
 using System;
+using static System.Convert;
 
 ///<summary>Manages methods that involves managing different property and object types.</summary>
 namespace Utils {
@@ -19,5 +20,8 @@ namespace Utils {
     
     public static DateTime RoundDownDate(DateTime dt) =>
       new DateTime(dt.Year,dt.Month, dt.Day);
+
+    public static dynamic CastObject(object obj, Type t) =>
+      ChangeType(obj, t);
   }
 }
