@@ -3,11 +3,14 @@ using static Utils.Constants;
 using static System.String;
 using static Utils.SysUtils;
 using System.Linq;
+using static System.Environment;
 using static Utils.StringUtils;
+using static Utils.Config;
 
 namespace Utils {
-  ///<summary>ConsoleUtils manages interactions (I/O) related methods.</summary>
+  ///<summary>ConsoleUtils manages output to console methods.</summary>
   public static class ConsoleUtils {
+
     internal static void SetConsoleTextColor(ConsoleColor color) =>
       Console.ForegroundColor = color;
 
@@ -28,9 +31,8 @@ namespace Utils {
 
     public static void OutputExceptionToConsole(Exception e, string customString = "", bool showSystemException = true) {
       SetConsoleTextColor(ConsoleColor.Red);
-      //Console.WriteLine((showSystemException) ? customString + NewLine + e.Message : customString);
-      //For debugging only.
-      Console.WriteLine(e);
+      Console.WriteLine((debugMode) ? e : 
+                        ((showSystemException) ? customString + NewLine + e.Message : customString));
     }
     
     public static void OutputSeparatorsToConsole(string str) {
@@ -40,7 +42,7 @@ namespace Utils {
 
     public static void OutputEntity(dynamic entity) {
       foreach(var property in entity.GetType().GetProperties()) {
-        OutputToConsole(Format("{0, -20} -> {1}", (property.Name ?? "").ToString(), 
+        OutputToConsole(Format("{0, -20} -> {1}", ToStringIncNull(property.Name), 
           (IsObjectStringList(property)) ?
             Join(',', Enumerable.ToList<string>(property.GetValue(entity))) :
             ToStringIncNull(property.GetValue(entity))));

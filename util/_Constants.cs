@@ -13,6 +13,7 @@ namespace Utils {
                         TBL_USER = "users",
                         EMPTY_SEARCH_TERM = "%",
                         OUTPUT_SMALL_LINESPLIT = "----------------------------------------------------------------------";
+
     public static string OUTPUT_LARGE_LINESPLIT = $"{NewLine}======================================================================",
                          OUTPUT_MAJOR_LINESPLIT = $"{NewLine}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{NewLine}";
   }

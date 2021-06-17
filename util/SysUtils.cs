@@ -1,8 +1,6 @@
 using System.Reflection;
 using System.Collections.Generic;
 using System;
-using static System.String;
-using System.Linq;
 
 ///<summary>Manages methods that involves managing different property and object types.</summary>
 namespace Utils {
@@ -12,5 +10,8 @@ namespace Utils {
     
     public static bool IsObjectDateTime(PropertyInfo p) =>
       (typeof(DateTime).IsAssignableFrom(p.PropertyType));
+    
+    public static PropertyInfo GetPropertyFromEntity(dynamic entity, string name) =>
+      entity.GetType().GetProperty(name);
   }
 }
