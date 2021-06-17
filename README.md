@@ -2,8 +2,8 @@
 
 * [Setting up the application](#Setup)
 * [Using the application](#Features)
+* [Assumptions & Limitations](#Assumptions)
 * [Code Design](#Design)
-* [Assumptions](#Assumptions)
 
 ## Setup
 These are the steps to set up the project on your local machine:
@@ -20,33 +20,75 @@ These are the steps to set up the project on your local machine:
 > dotnet build
 ```
 4. Move to the directory where the application is stored:
+```
 > cd bin/Debug/netcoreapp3.1
+```
 5. Starting the application:
 ```
 > .\JSON-Searcher.exe
 ```
-* You can prevent typo errors at by typing JSON and keep pressing the TAB key until you get the right file to execute.
-* *OR* alternatively you can go to {host-directory-path}/bin/Debug/netcoreapp3.1 and click on JSON-Searcher.exe directly.
+* You can prevent typo errors by typing JSON and keep pressing the TAB key until you get the correct file to execute.
+* *OR* alternatively, you can go to {host-directory-path}/bin/Debug/netcoreapp3.1 and click on JSON-Searcher.exe directly.  
 
+&nbsp;
 ## Features
-1. Once you have the application set-up. You can use the list of available commands to start searching.
-  * You can always type HELP into the application to view all available commands.
+### The application provides several commands:
+1.  **help**: Displays all the available commands and how to use them.
+```
+> help
+```
+2.  **exit**: Closes the application.
+```
+> exit
+```
+3. **clear**: Remove all existing console text.
+```
+> clear
+```
+4. **reload**: Reimports JSON files from the allocated folder.
+```
+> reload
+```
+  * *Note*: Files are imported from {host-directory-path}/JSON folder. So make sure you have the right files in it before reloading.
+  * Starting the application will automatically load the existing files once.
 
+5. **search**: Performs searches based on your input:
+  * search table [field, value]... - Return results in the table that matches all field-value filters:
+```
+> search organizations [field, value]...
+```
+#### Note:
+  - You can supply multiple field-value pairs, but all fields must have a corresponding value **(Use "%" to represent searching empty fields!)**.
+```
+> search organizations _id 101 tags %
+```
+  * Commands, tables, fields, and values are case insensitive, and values do not have to match fully.
+```
+> SeARcH orGanIZAtiOns _iD 1 NAmE eX
+```
+  * Date filters only matches year, month, and date. The search value also have to follow the format **yyyy/mm/dd**.
+```
+> search organizations created_at 2016/05/22
+```
 
-## Design
-  * The *json* folder contains the raw json files which can be picked up by the application. You can also provide customized inputs into the system.
-  * The *model* folder contains class files that represents the json schema so they can store JSON objects.
-  * The *data* folder stores data parsed from the JSON files once they are loaded. It also contains the main logic for searching those fields.
-  * The *utils* folder contains different methods that assists the functions in the above folders.
-
+&nbsp;
 ## Assumptions
-  * Invalid JSON files are detected, but valid JSON strings must have a corresponding class in the *model* folder.
-  * JSON object list must be stored within an array [].
-  * Only JSON files are supplied into the *json* folder.
-  * Your search values cannot contain spaces.
-  * All JSON schema attributes are compulsory.
-  * Only _id fields are compulsory, all other fields are optional.
-  * Since multiple-search fields are included, user needs to type '%' only to indicate that this searches for fields that are empty.
-  * Because of this constraint, I assume no values in any JSON files will contain %.
+### Files
+  1. The JSON objects must be stored as an array [], even if the number of objects is one.
+  2. The application can only import .json files (.txt files will not be picked up for example).
+  3. The supplied JSON objects must be parsable to one of the classes in the *model* folder.
+  4. File names must also be one of the class names in the *model* folder (Case insensitive).
+### Data
+  1. "_id" field is Mandatory. All other JSON object fields are optional.
+  2. No values in the JSON fields are "%".
+### Search
+  1. TBC
 
-
+&nbsp;
+## Design
+  1. The *JSON* folder contains raw files from which the application imports files. You can also provide customized inputs into the system by replacing content in the default .json files.
+  2. The *model* folder contains class templates that represent their respective JSON object schemas.
+  3. The *utils* folder contains utility classes and methods that assist the application and make the code cleaner and more readable.
+  4. The *tests* folder contains various tests that cover multiple file and input scenarios.
+  5. The *data* folder manages data storage and search functionalities.
+  6. The commands and data are built using Dictionaries for minimal complexity and optimizes the load time.
