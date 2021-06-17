@@ -81,7 +81,7 @@ namespace Data {
         }
 
         OutputSeparatorsToConsole(OUTPUT_MAJOR_LINESPLIT);
-        OutputPassToConsole($"{baseTable.Count()} results found.");
+        OutputPassToConsole($"{baseTable.Count()} {input[1]} found.");
         OutputToConsole("End of search.");
     }
 

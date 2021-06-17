@@ -37,6 +37,9 @@ These are the steps to set up the project on your local machine:
 * You can prevent typo errors by typing JSON and keep pressing the TAB key until you get the correct file to execute.
 * *OR* alternatively, you can go to {host-directory-path}/bin/Debug/netcoreapp3.1 and click on JSON-Searcher.exe directly.  
 
+7. Testing the application:
+* From step 4, instead of cd
+
 &nbsp;
 ## Features
 ### The application provides several commands:
@@ -74,7 +77,7 @@ These are the steps to set up the project on your local machine:
 ```
 > search organizations _id 101 tags %
 ```
-  * Commands, tables, fields, and values are case insensitive, and values do not have to match fully.
+  * Commands, tables, fields, and values are case insensitive, and values do not have to match fully (I understand the requirement says full matching is fine but i went further as a challenge).
 ```
 > SeARcH orGanIZAtiOns _iD 1 NAmE eX
 ```
@@ -98,14 +101,14 @@ These are the steps to set up the project on your local machine:
 
 &nbsp;
 ## Design
-  * The _Configs.cs contains some settings you may find useful should you ever find the need to change it:
+  * The */Searcher/_Configs.cs* contains some settings you may find useful should you ever find the need to change it:
     - The closeApp config is for checking if the app is running. **Do not touch**.
     - The debugging config determines the exception displayed. *FALSE* only shows the exception message and *TRUE* will display the entire stacktrace.
     - The logging config determines whether logs are stored per each **search**. *FALSE* will prevent any logging and *TRUE* will save the search results in /logs folder as a .yaml file.
-  * The *libs* folder contains library files retrieved from third-party source with references. As per the requirement no search libraries will be imported.
-  * The *JSON* folder contains raw files from which the application imports files. You can also provide customized inputs into the system by replacing content in the default .json files.
-  * The *model* folder contains class templates that represent their respective JSON object schemas.
-  * The *utils* folder contains utility classes and methods that assist the application and make the code cleaner and more readable.
-  * The *tests* folder contains various tests that cover multiple file and input scenarios.
-  * The *data* folder manages data storage and search functionalities.
+  * The */Searcher/libs* folder contains library files retrieved from third-party source with references. As per the requirement no search libraries will be imported.
+  * The */Searcher/JSON* folder contains raw files from which the application imports files. You can also provide customized inputs into the system by replacing content in the default .json files.
+  * The */Searcher/model* folder contains class templates that represent their respective JSON object schemas.
+  * The */Searcher/utils* folder contains utility classes and methods that assist the application and make the code cleaner and more readable.
+  * The */Searcher/data* folder manages data storage and search functionalities.
   * The commands and data are built using Dictionaries for minimal complexity and optimizes the load time.
+  * The */Searcher/tests* folder contains various unit tests and various search test cases. Due to static expected values based on the default json files, please do not alter the */Tests/json* and the */Tests/logs* folder. Under this scenario all the tests contained should be passing.
