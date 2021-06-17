@@ -82,7 +82,7 @@ These are the steps to set up the project on your local machine:
   1. "_id" field is Mandatory. All other JSON object fields are optional.
   2. No values in the JSON fields are "%".
 ### Search
-  1. TBC
+  1. Date searches are searched, filtered, and returned based on Melbourne timezone (GMT +10).
 
 &nbsp;
 ## Design

@@ -16,5 +16,8 @@ namespace Utils {
     
     public static object GetValueFromEntityProperty(dynamic entity, string name) =>
       GetPropertyFromEntity(entity, name).GetValue(entity);
+    
+    public static DateTime RoundDownDate(DateTime dt) =>
+      new DateTime(dt.Year,dt.Month, dt.Day);
   }
 }

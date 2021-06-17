@@ -10,6 +10,7 @@ using static Utils.ConsoleUtils;
 using static System.Environment;
 using static Utils.Constants;
 using static Utils.SysUtils;
+using static System.String;
 
 namespace Data {
   ///<summary>DataSearcher manages file search methods.</summary>
@@ -68,7 +69,7 @@ namespace Data {
         if (e is IndexOutOfRangeException) {
           OutputExceptionToConsole(e, $"Field {input.Last()} had no value provided");
         }
-        //??
+        //Exception found implies no results returned.
         return new List<dynamic>();
       }
     }
@@ -80,9 +81,11 @@ namespace Data {
         //TODO - Resolve case sensitivity
         return Enumerable.ToList<string>(p.GetValue(entity)).Contains(kpv.Value);
       } else if (IsObjectDateTime(p)) {
-        return DateTime.Parse(ToStringIncNull(p.GetValue(entity))).Date == DateTime.Parse(kpv.Value).Date;
+        return RoundDownDate(DateTime.Parse(ToStringIncNull(p.GetValue(entity)))) == DateTime.Parse(kpv.Value);
       } else {
-        return ContainsIgnoreCase(ToStringIncNull(p.GetValue(entity)), kpv.Value);
+        return (IsNullOrEmpty(kpv.Value.Trim())) ?
+          ToStringIncNull(p.GetValue(entity) == kpv.Value.Trim()) :
+          ContainsIgnoreCase(ToStringIncNull(p.GetValue(entity)), kpv.Value);
       }
     }
 

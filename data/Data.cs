@@ -11,6 +11,7 @@ using static System.IO.File;
 using static System.String;
 using static Utils.StringUtils;
 using static System.Environment;
+using static System.StringComparer;
 
 namespace Data {
   ///<summary>Data class manages CRUD functions from JSON data imports.</summary>
@@ -36,7 +37,7 @@ namespace Data {
       It also includes how the entities are related to other tables (Linking _id to various id foreign keys).
     */
     public static Dictionary<string, TableProperties> tables =
-      new Dictionary<string, TableProperties>() {
+      new Dictionary<string, TableProperties>(OrdinalIgnoreCase) {
         { $"{TBL_ORGANIZATION}.json", new TableProperties(
             new List<dynamic>(), new List<string>() {"organization_id"}, new List<string>(), new List<Organization>().GetType()) },
         { $"{TBL_TICKET}.json", new TableProperties(
