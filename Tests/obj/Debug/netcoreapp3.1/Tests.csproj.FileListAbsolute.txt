@@ -1,0 +1,17 @@
+D:\Coding\Projects\JSON-Searcher\Tests\bin\Debug\netcoreapp3.1\Tests.deps.json
+D:\Coding\Projects\JSON-Searcher\Tests\bin\Debug\netcoreapp3.1\Tests.dll
+D:\Coding\Projects\JSON-Searcher\Tests\bin\Debug\netcoreapp3.1\Tests.pdb
+D:\Coding\Projects\JSON-Searcher\Tests\obj\Debug\netcoreapp3.1\Tests.csprojAssemblyReference.cache
+D:\Coding\Projects\JSON-Searcher\Tests\obj\Debug\netcoreapp3.1\Tests.GeneratedMSBuildEditorConfig.editorconfig
+D:\Coding\Projects\JSON-Searcher\Tests\obj\Debug\netcoreapp3.1\Tests.AssemblyInfoInputs.cache
+D:\Coding\Projects\JSON-Searcher\Tests\obj\Debug\netcoreapp3.1\Tests.AssemblyInfo.cs
+D:\Coding\Projects\JSON-Searcher\Tests\obj\Debug\netcoreapp3.1\Tests.csproj.CoreCompileInputs.cache
+D:\Coding\Projects\JSON-Searcher\Tests\obj\Debug\netcoreapp3.1\Tests.dll
+D:\Coding\Projects\JSON-Searcher\Tests\obj\Debug\netcoreapp3.1\Tests.pdb
+D:\Coding\Projects\JSON-Searcher\Tests\bin\Debug\netcoreapp3.1\JSON-Searcher.deps.json
+D:\Coding\Projects\JSON-Searcher\Tests\bin\Debug\netcoreapp3.1\JSON-Searcher.runtimeconfig.json
+D:\Coding\Projects\JSON-Searcher\Tests\bin\Debug\netcoreapp3.1\JSON-Searcher.runtimeconfig.dev.json
+D:\Coding\Projects\JSON-Searcher\Tests\bin\Debug\netcoreapp3.1\JSON-Searcher.exe
+D:\Coding\Projects\JSON-Searcher\Tests\bin\Debug\netcoreapp3.1\JSON-Searcher.dll
+D:\Coding\Projects\JSON-Searcher\Tests\bin\Debug\netcoreapp3.1\JSON-Searcher.pdb
+D:\Coding\Projects\JSON-Searcher\Tests\obj\Debug\netcoreapp3.1\Tests.csproj.CopyComplete

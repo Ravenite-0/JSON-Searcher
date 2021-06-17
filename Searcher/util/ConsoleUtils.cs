@@ -11,7 +11,7 @@ namespace Utils {
   ///<summary>ConsoleUtils manages output to console methods.</summary>
   public static class ConsoleUtils {
 
-    internal static void SetConsoleTextColor(ConsoleColor color) =>
+    public static void SetConsoleTextColor(ConsoleColor color) =>
       Console.ForegroundColor = color;
 
     public static void OutputToConsole(string str) {

@@ -1,8 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.13.2"/>
+    <ProjectReference Include="..\Searcher\JSON-Searcher.csproj" />
+  </ItemGroup>
 </Project>
