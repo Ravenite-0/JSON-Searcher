@@ -13,7 +13,7 @@ using static Utils.StringUtils;
 using static System.Environment;
 
 namespace Data {
-  ///<summary>Data class imports and stores successfully imported valid JSON data.</summary>
+  ///<summary>Data class manages CRUD functions from JSON data imports.</summary>
   public class Database {
 
     //Stores search parameters and other variables for easier searching.

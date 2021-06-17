@@ -13,5 +13,8 @@ namespace Utils {
     
     public static PropertyInfo GetPropertyFromEntity(dynamic entity, string name) =>
       entity.GetType().GetProperty(name);
+    
+    public static object GetValueFromEntityProperty(dynamic entity, string name) =>
+      GetPropertyFromEntity(entity, name).GetValue(entity);
   }
 }

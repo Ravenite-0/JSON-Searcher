@@ -1,5 +1,5 @@
 using static Data.Database;
-using static Data.SearchByProperty;
+using static Data.DataSearcher;
 using System;
 using System.Collections.Generic;
 using static Utils.Constants;
@@ -30,7 +30,7 @@ namespace Utils {
           (string[] input) => ImportEntitiesFromJson())},
         {CMD_SEARCH, new KeyValuePair<string, Action<string[]>>(
           "search table [field value]... Searches a table with custom filters.",
-          (string[] input) => ValidateSearch(input))}
+          (string[] input) => ValidateAndReturnSearchResults(input))}
     };
 
     public static void ExecuteCommand(string input) {
