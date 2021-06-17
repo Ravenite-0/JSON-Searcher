@@ -1,14 +1,15 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Reflection;
 using System.Collections.Generic;
 using static Utils.ConsoleUtils;
 using static Utils.FileUtils;
 using static Utils.StringUtils;
 using static Utils.SysUtils;
+using static Data.Database;
+using System.Linq;
 
 namespace Tests {
-  public class UnitTest {
+  public class UtilTest {
     [TestFixture]
     public class ConsoleUtilsTest {
       [Test]
@@ -94,5 +95,16 @@ namespace Tests {
       public void Test_RoundDownDate() =>
         Assert.AreEqual(new DateTime(2020, 1, 1), RoundDownDate(new DateTime(2020, 1, 1, 23, 59, 59 ,999)));
     }
+
+    [TestFixture]
+    public class DataTests {
+      [Test]
+      public void Test_ImportEntitiesFromJson() {
+        ImportEntitiesFromJson();
+        Assert.AreEqual(25, tables["organizations.json"].content.Count());
+        Assert.AreEqual(200, tables["tickets.json"].content.Count());
+        Assert.AreEqual(75, tables["users.json"].content.Count());
+      }
+  }
   }
 }

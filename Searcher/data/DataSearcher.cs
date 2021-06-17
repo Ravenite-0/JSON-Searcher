@@ -12,12 +12,16 @@ using static Utils.Constants;
 using static Utils.SysUtils;
 using static System.String;
 using static System.StringComparison;
-using static Utils.FileUtils;
-using System.IO;
+using Model;
 
 namespace Data {
   ///<summary>DataSearcher manages file search methods.</summary>
   public static class DataSearcher {
+
+    //These lists are for testing purposes only.
+    public static List<dynamic> entities;
+    public static List<List<dynamic>> relatedEntities = new List<List<dynamic>>();
+
 
     public static void GetTableFields(string[] input) {
       try{
@@ -66,7 +70,7 @@ namespace Data {
       }
     }
 
-    internal static void OutputSearchResults(string[] input) {
+    public static void OutputSearchResults(string[] input) {
         var tableKey = input[1].ParseToTableName();
         var baseTable = (input.Length == 2) ? tables[tableKey].content : SearchBaseTable(tables[tableKey].content, input);
         OutputToConsole($"Searching in {tableKey}:{NewLine}");
@@ -81,7 +85,7 @@ namespace Data {
         OutputToConsole("End of search.");
     }
 
-    internal static List<dynamic> SearchBaseTable(List<dynamic> baseTable, string[] input) {
+    public static List<dynamic> SearchBaseTable(List<dynamic> baseTable, string[] input) {
       ListDictionary searchFields = new ListDictionary();
       try {
         for (int i = 2; i <= input.Length - 1; i++) {
@@ -107,7 +111,7 @@ namespace Data {
       }
     }
 
-    internal static bool CalculateExpectedProperty(dynamic entity, DictionaryEntry keyValue) {
+    public static bool CalculateExpectedProperty(dynamic entity, DictionaryEntry keyValue) {
       KeyValuePair<string, string> kpv = new KeyValuePair<string, string>(ToStringIncNull(keyValue.Key), ToStringIncNull(keyValue.Value));
       PropertyInfo p = GetPropertyFromEntity(entity, kpv.Key);
       if(p is null) {
@@ -131,7 +135,7 @@ namespace Data {
     }
 
 
-    internal static void SearchAndOutputRelatedEntities(string tableKey, object row, List<string> pKeys, List<string> fKeys) {
+    public static void SearchAndOutputRelatedEntities(string tableKey, object row, List<string> pKeys, List<string> fKeys) {
       var pKeyValues = GenerateKeyValues(pKeys, row, true);
       var fKeyValues = GenerateKeyValues(fKeys, row);
 
@@ -146,6 +150,7 @@ namespace Data {
                 var fkProperty = GetPropertyFromEntity(row, fkv.Key);
                 return (fkProperty != null) ? fkv.Value == fkProperty.GetValue(row) : false;
               }));
+          relatedEntities.Add(resultTable.ToList());
 
           foreach(var result in resultTable) {
             OutputEntity(result);
@@ -156,7 +161,7 @@ namespace Data {
       }
     }
 
-    internal static List<KeyValuePair<string, string>> GenerateKeyValues(List<string> keys, object row, bool isPk = false) =>
+    public static List<KeyValuePair<string, string>> GenerateKeyValues(List<string> keys, object row, bool isPk = false) =>
       keys.Zip(keys
           .Select(k => ToStringIncNull(GetValueFromEntityProperty(row, (isPk) ? "_id" : k))).ToList(),
           (k, v) => new KeyValuePair<string, string>(k, v)).ToList();
