@@ -20,8 +20,5 @@ namespace Utils {
     
     public static DateTime RoundDownDate(DateTime dt) =>
       new DateTime(dt.Year,dt.Month, dt.Day);
-
-    public static dynamic CastObject(object obj, Type t) =>
-      ChangeType(obj, t);
   }
 }

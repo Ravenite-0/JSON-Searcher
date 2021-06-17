@@ -11,7 +11,7 @@ namespace Utils {
   ///<summary>FileUtils manages methods that interacts with files in the system.</summary>
   public static class FileUtils {
     //Keep looping the parent directory until the folder is found.
-    internal static string GetChildDir(string childDir) {
+    public static string GetChildDir(string childDir) {
       string targetpath = GetExecutingAssembly().Location;
       string result = null;
       while(GetParent(targetpath) != null) {
