@@ -11,6 +11,7 @@ using static System.Environment;
 using static Utils.Constants;
 using static Utils.SysUtils;
 using static System.String;
+using static System.StringComparison;
 
 namespace Data {
   ///<summary>DataSearcher manages file search methods.</summary>
@@ -54,7 +55,7 @@ namespace Data {
       ListDictionary searchFields = new ListDictionary();
       try {
         for (int i = 2; i <= input.Length - 1; i++) {
-          searchFields.Add(input[i], input[++i]);
+          searchFields.Add(input[i].ToLower(), input[++i]);
         }
 
         return baseTable.Where(row => {
@@ -78,8 +79,13 @@ namespace Data {
       KeyValuePair<string, string> kpv = new KeyValuePair<string, string>(ToStringIncNull(keyValue.Key), ToStringIncNull(keyValue.Value));
       PropertyInfo p = GetPropertyFromEntity(entity, kpv.Key);
       if(IsObjectStringList(p)) {
-        //TODO - Resolve case sensitivity
-        return Enumerable.ToList<string>(p.GetValue(entity)).Contains(kpv.Value);
+        var list = Enumerable.ToList<string>(p.GetValue(entity));
+        foreach(string str in list) {
+          if(str.Equals(kpv.Value, OrdinalIgnoreCase)) {
+            return true;
+          }
+        }
+        return false;
       } else if (IsObjectDateTime(p)) {
         return RoundDownDate(DateTime.Parse(ToStringIncNull(p.GetValue(entity)))) == DateTime.Parse(kpv.Value);
       } else {
@@ -98,16 +104,15 @@ namespace Data {
           OutputToConsole(OUTPUT_LARGE_LINESPLIT);
           OutputToConsole($"Searching for related items from {table.Key}:");
 
-          foreach(var resultRow in table.Value.content) {
-            if(pKeyValues.Any(pkv => 
-                pkv.Value == ToStringIncNull(GetValueFromEntityProperty(resultRow, pkv.Key))) ||
-              fKeyValues.Any(fkv => {
-                var fkProperty = GetPropertyFromEntity(resultRow, fkv.Key);
-                return (fkProperty != null) ? fkv.Value == fkProperty.GetValue(resultRow) : false;
-              })) {
-                OutputEntity(resultRow);
-                break;
-            }
+          var resultTable = table.Value.content.Where(row => 
+            (pKeyValues.Any(pkv => pkv.Value == ToStringIncNull(GetValueFromEntityProperty(row, pkv.Key)))) ||
+            fKeyValues.Any(fkv => {
+                var fkProperty = GetPropertyFromEntity(row, fkv.Key);
+                return (fkProperty != null) ? fkv.Value == fkProperty.GetValue(row) : false;
+              }));
+
+          foreach(var result in resultTable) {
+            OutputEntity(result);
           }
           OutputToConsole(OUTPUT_LARGE_LINESPLIT);
         }
