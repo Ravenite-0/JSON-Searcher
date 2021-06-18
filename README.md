@@ -90,9 +90,10 @@ These are the steps to set up the project on your local machine:
 ## Assumptions
 ### Files
   1. The JSON objects must be stored as an array [], even if the number of objects is one.
-  2. The application can only import .json files (.txt files will not be picked up for example).
+  2. The application can only import .json files **(Non .json files in the folder will break the test)**.
   3. The supplied JSON objects must be parsable to one of the classes in the *model* folder.
-  4. File names must also be one of the class names in the *model* folder (Case insensitive).
+  4. The file name supplied for the .json files must be one of the TBL_ constants in *_Constants.cs*.
+  5. File names must also be one of the class names in the *model* folder (Case insensitive).
 ### Data
   1. "_id" field is Mandatory. All other JSON object fields are optional.
   2. No values in the JSON fields are "%".
@@ -111,4 +112,4 @@ These are the steps to set up the project on your local machine:
   * The */Searcher/utils* folder contains utility classes and methods that assist the application and make the code cleaner and more readable.
   * The */Searcher/data* folder manages data storage and search functionalities.
   * The commands and data are built using Dictionaries for minimal complexity and optimizes the load time.
-  * The */Searcher/tests* folder contains various unit tests and various search test cases. Due to static expected values based on the default json files, please do not alter the */Tests/json* and the */Tests/logs* folder. Under this scenario all the tests contained should be passing.
+  * The */Tests* folder contains various unit tests and various search test cases. Due to static expected values based on the default json files, please do not alter the */Tests/json* and the */Tests/logs* folder. Under this scenario all the tests contained should be passing.
